@@ -24,3 +24,8 @@ Options -Indexes
 </IfModule>
 
 AddType font/woff2 .woff2
+
+# PHP-Einstellungen nicht ausliefern
+<Files ".user.ini">
+  Require all denied
+</Files>

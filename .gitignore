@@ -4,3 +4,10 @@ daten/login-versuche.json
 # Geschützte Dateien nur auf dem Server ablegen
 daten/dateien/*
 !daten/dateien/.gitkeep
+# Alles, was in der Verwaltung entsteht, liegt nur auf dem Server
+daten/inhalt.json
+daten/inhalt.json.tmp
+daten/inhalt.json.lock
+daten/sicherung/
+uploads/*
+!uploads/.htaccess

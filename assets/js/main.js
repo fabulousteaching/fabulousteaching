@@ -58,7 +58,7 @@
       var zyklen = (k.getAttribute('data-zyklen') || '').split(' ').filter(Boolean);
       var text = k.getAttribute('data-suche') || '';
       var passt =
-        (!zustand.fach || k.getAttribute('data-fach') === zustand.fach) &&
+        (!zustand.fach || (' ' + (k.getAttribute('data-fach') || '') + ' ').indexOf(' ' + zustand.fach + ' ') !== -1) &&
         (!zustand.zyklus || zyklen.length === 0 || zyklen.indexOf(zustand.zyklus) !== -1) &&
         begriffe.every(function (b) { return text.indexOf(b) !== -1; });
       k.hidden = !passt;

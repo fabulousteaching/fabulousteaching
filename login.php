@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fehler = 'Die beiden Passwörter stimmen nicht überein.';
         } else {
             $inhalt = "<?php\n// Konten für den Login-Bereich. Passwörter sind verschlüsselt (password_hash).\nreturn "
-                . var_export([$name => password_hash($pw, PASSWORD_DEFAULT)], true) . ";\n";
+                . var_export([$name => ['hash' => password_hash($pw, PASSWORD_DEFAULT), 'rolle' => 'admin']], true) . ";\n";
             // x = nur anlegen, wenn die Datei noch nicht existiert
             $fh = @fopen(BENUTZER_DATEI, 'x');
             if ($fh && fwrite($fh, $inhalt) !== false) {
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fehler = 'Zu viele Fehlversuche. Bitte in 15 Minuten noch einmal versuchen.';
         } else {
             // Auch bei unbekanntem Namen ein Passwort prüfen, damit die Antwortzeit nichts verrät
-            $hash = $konten[$name] ?? '$2y$10$a/56g4sjgnoyaUnanQVpi.krb2tR/BZaOFDsfHPZ89aTlhJnzk.mW';
+            $hash = isset($konten[$name]) ? konto_hash($konten[$name]) : '$2y$10$a/56g4sjgnoyaUnanQVpi.krb2tR/BZaOFDsfHPZ89aTlhJnzk.mW';
             $ok   = password_verify($pw, $hash);
             if ($ok && isset($konten[$name])) {
                 session_regenerate_id(true);

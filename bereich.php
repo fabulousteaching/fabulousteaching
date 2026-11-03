@@ -30,13 +30,25 @@ require __DIR__ . '/inc/kopf.php';
       <div class="meldung meldung-ok" role="status"><?= icon('shield-check') ?><span>Dein Konto ist eingerichtet und du bist angemeldet.</span></div>
     <?php endif; ?>
 
+    <?php if (ist_admin()): ?>
+      <div class="box box-admin" style="margin-bottom:24px">
+        <h2><?= icon('key-round') ?> Verwaltung</h2>
+        <p>Materialien hochladen, bearbeiten und Fächer verwalten.</p>
+        <div class="knopf-reihe">
+          <a class="knopf knopf-klein" href="verwaltung-material.php"><?= icon('download', 'icon-hoch') ?> Material hochladen</a>
+          <a class="knopf knopf-klein knopf-hell" href="verwaltung.php"><?= icon('folder-lock') ?> Alle Materialien</a>
+          <a class="knopf knopf-klein knopf-hell" href="verwaltung-faecher.php"><?= icon('book-open') ?> Fächer</a>
+        </div>
+      </div>
+    <?php endif; ?>
+
     <div class="bereich-raster">
       <div class="box">
         <h2><?= icon('folder-lock') ?> Geschützte Materialien</h2>
         <?php if ($geschuetzt): ?>
           <ul class="liste">
             <?php foreach ($geschuetzt as $m):
-              $fach = $daten['faecher'][$m['fach'] ?? '']['name'] ?? ''; ?>
+              $fach = fach_namen($m, $daten['faecher']); ?>
               <li>
                 <div>
                   <strong><?= e($m['titel']) ?></strong>

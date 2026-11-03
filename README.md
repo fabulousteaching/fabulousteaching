@@ -9,11 +9,14 @@ Rätsellabor und Login-Bereich. Farben und Stil kommen aus dem Logo
 | Datei | Inhalt |
 |---|---|
 | `index.php` | Home: Begrüssung, **Über mich** (Foto + Text), Überblick, Materialvorschau |
-| `unterrichtsmaterialien.php` | Materialien mit Fach-Kacheln, Zyklus-Filter und Suche |
+| `unterrichtsmaterialien.php` | Materialien mit Fach-Reitern, Zyklus-Filter und Suche |
 | `raetsellabor.php` | Infoseite mit Knopf zu https://raetsellabor.fabulousteaching.ch |
 | `login.php` | Anmeldung (beim allerersten Aufruf: eigenes Konto einrichten) |
 | `bereich.php` | «Mein Bereich» nach dem Login: geschützte Materialien, Abmelden |
 | `download.php` | liefert geschützte Dateien nur an angemeldete Personen aus |
+| `verwaltung.php` | **Verwaltung** (nur Administrator): alle Materialien, Reihenfolge, Entwürfe |
+| `verwaltung-material.php` | Material hochladen bzw. bearbeiten |
+| `verwaltung-faecher.php` | Fächer anlegen, umbenennen, sortieren (= Reiter) |
 
 Gemeinsame Teile liegen in `inc/` (Kopf mit Navigation, Fusszeile, Symbole),
 die Gestaltung in `assets/css/stil.css`.
@@ -63,6 +66,44 @@ Den **Inhalt** dieses Repositorys (ohne `.git`, `.github`, `README.md`) per FTP
 direkt darin liegt. Die versteckten `.htaccess`-Dateien unbedingt mitkopieren
 (sie sperren `inc/` und `daten/`).
 
+## Verwaltung: Materialien hochladen
+
+Nach dem Login unter **Mein Bereich → Verwaltung** (nur für Administratoren).
+
+1. **Material hochladen** – in vier Schritten:
+   1. *Datei* hineinziehen oder auswählen (PDF, Word, PowerPoint, Excel, ZIP, Bilder,
+      Audio) – oder einen *Link* angeben.
+   2. *Beschreibung*: Titel und Kurzbeschreibung.
+   3. *Einordnung*: ein oder mehrere Fächer, Stufe, Materialart, Umfang, Schlagwörter.
+   4. *Vorschau & Sichtbarkeit*: Vorschaubild, «Alle» oder «Nur nach dem Login»,
+      «Veröffentlicht» oder «Entwurf», Abzeichen «Neu».
+   Rechts zeigt eine Live-Vorschau, wie die Karte aussehen wird.
+2. **Übersicht**: bearbeiten, veröffentlichen/zurückziehen, Reihenfolge ändern, löschen
+   (die Datei wird mitgelöscht). «Alle Beispiele löschen» entfernt die Platzhalter.
+3. **Fächer verwalten**: Name, Farbe und Symbol; die Reihenfolge ist die der Reiter.
+   Ein Fach lässt sich erst löschen, wenn kein Material mehr dazugehört.
+
+Wo die Daten liegen (nur auf dem Server, nie im Repository – der automatische
+Upload überschreibt sie deshalb nicht):
+
+| Was | Ort |
+|---|---|
+| Fächer und Materialien | `daten/inhalt.json` |
+| Sicherungen (die letzten 30 Fassungen) | `daten/sicherung/` |
+| Öffentliche Dateien | `uploads/materialien/` |
+| Geschützte Dateien | `daten/dateien/` |
+| Vorschaubilder | `uploads/vorschau/` |
+
+Für eine Sicherung diese Ordner gelegentlich per FTP herunterladen.
+
+**Grösse der Dateien:** Die Datei `.user.ini` erlaubt Uploads bis 64 MB. Zeigt das
+Formular trotzdem eine kleinere Grenze, im Infomaniak-Manager bei der Website unter
+den PHP-Einstellungen `upload_max_filesize` und `post_max_size` erhöhen.
+
+**Vorschaubild aus PDF:** Ohne eigenes Bild versucht die Website, die erste PDF-Seite
+als Vorschau zu verwenden. Das klappt nur, wenn auf dem Server die PHP-Erweiterung
+Imagick aktiv ist; sonst einfach ein Bild hochladen.
+
 ## Inhalte anpassen
 
 - **Über-mich-Text:** in `index.php` beim Kommentar `TODO` den Platzhalter ersetzen.
@@ -70,20 +111,20 @@ direkt darin liegt. Die versteckten `.htaccess`-Dateien unbedingt mitkopieren
   `assets/bilder/ueber-mich-bein.webp`: das freigestellte Bein, das unten aus dem Rahmen
   hängt (gleiche Breite, beginnt 8 px oberhalb der Foto-Unterkante). Ohne diese Datei wird
   das Foto einfach normal im Rahmen gezeigt.
-- **Materialien:** alles in `daten/materialien.php` – oben in der Datei ist
-  beschrieben, welche Felder es gibt. Die Einträge mit `'beispiel' => true`
-  sind Platzhalter und können gelöscht werden.
-  - Öffentliche Dateien in den Ordner `downloads/` legen.
-  - Dateien nur für Angemeldete (`'nur_angemeldet' => true`) in `daten/dateien/` legen.
-- **Fächer und Farben:** ebenfalls in `daten/materialien.php` unter `'faecher'`.
+- **Materialien und Fächer:** am einfachsten über die Verwaltung (siehe oben).
+  `daten/materialien.php` enthält nur noch die Grundeinstellung (Stufen, Start-Fächer,
+  Beispiele) und gilt, solange in der Verwaltung noch nichts gespeichert wurde.
 - **Adresse des Rätsellabors:** in `inc/start.php` (`RAETSELLABOR_URL`).
 - **Menüpunkte:** in `inc/kopf.php` (Liste `$menue`).
 
 ## Konten
 
-- Das erste Konto legst du über `login.php` selbst an. Gespeichert wird es in
-  `daten/benutzer.php` (Passwort nur als sicherer Hash). Diese Datei kommt nicht ins Git.
-- Weitere Konten: in `daten/benutzer.php` eine Zeile `'name' => 'hash',` ergänzen.
+- Das erste Konto legst du über `login.php` selbst an; es ist **Administrator**.
+  Gespeichert wird es in `daten/benutzer.php` (Passwort nur als sicherer Hash).
+  Diese Datei kommt nicht ins Git.
+- Weitere Konten: in `daten/benutzer.php` ergänzen:
+  `'name' => ['hash' => '…', 'rolle' => 'mitglied'],` – Mitglieder sehen geschützte
+  Materialien, aber nicht die Verwaltung (`'rolle' => 'admin'` für weitere Administratoren).
   Den Hash erzeugt `php -r 'echo password_hash("NeuesPasswort", PASSWORD_DEFAULT);'`.
 - Passwort vergessen: `daten/benutzer.php` per FTP löschen und das Konto neu einrichten.
 - Nach 8 Fehlversuchen innert 15 Minuten wird der Login für dieses Gerät kurz gesperrt.

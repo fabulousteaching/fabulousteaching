@@ -42,15 +42,17 @@ SVG;
  */
 function material_karte(array $m, array $faecher, array $zyklen): string
 {
-    $fachSchluessel = (string) ($m['fach'] ?? '');
-    $fach   = $faecher[$fachSchluessel] ?? ['name' => 'Allgemein', 'icon' => 'file-text', 'farbe' => '#f7a15c'];
-    $stufen = array_map('intval', $m['zyklen'] ?? []);
-    $schutz = !empty($m['nur_angemeldet']);
+    $m = material_normalisieren($m);
+    $schluessel = array_values(array_filter($m['faecher'], fn($k) => isset($faecher[$k])));
+    $fach   = $schluessel ? $faecher[$schluessel[0]] : ['name' => 'Allgemein', 'icon' => 'file-text', 'farbe' => '#f7a15c'];
+    $fachText = fach_namen($m, $faecher) ?: $fach['name'];
+    $stufen = $m['zyklen'];
+    $schutz = $m['nur_angemeldet'];
     $wer    = angemeldet();
 
-    // Suchtext für die Filterfunktion
+    // Suchtext für die Filterfunktion (inkl. Schlagwörter)
     $suche = mb_strtolower(implode(' ', [
-        $m['titel'] ?? '', $m['beschreibung'] ?? '', $fach['name'], $m['typ'] ?? '',
+        $m['titel'], $m['beschreibung'], $fachText, $m['typ'], implode(' ', $m['schlagwoerter']),
     ]), 'UTF-8');
 
     // Knopf: Link, Download, Login oder "folgt"
@@ -64,7 +66,8 @@ function material_karte(array $m, array $faecher, array $zyklen): string
     } elseif ($schutz) {
         $knopf = '<a class="knopf knopf-klein" href="download.php?datei=' . rawurlencode((string) $m['datei']) . '">' . icon('download') . ' Herunterladen</a>';
     } else {
-        $knopf = '<a class="knopf knopf-klein" href="downloads/' . rawurlencode((string) $m['datei']) . '" download>' . icon('download') . ' Herunterladen</a>';
+        $url = $m['datei_pfad'] !== '' ? implode('/', array_map('rawurlencode', explode('/', $m['datei_pfad']))) : 'downloads/' . rawurlencode($m['datei']);
+        $knopf = '<a class="knopf knopf-klein" href="' . e($url) . '" download>' . icon('download') . ' Herunterladen</a>';
     }
 
     $bild = !empty($m['bild'])
@@ -84,14 +87,14 @@ function material_karte(array $m, array $faecher, array $zyklen): string
     }
 
     ob_start(); ?>
-<article class="karte" style="--f:<?= e($fach['farbe']) ?>" data-fach="<?= e($fachSchluessel) ?>" data-zyklen="<?= e(implode(' ', $stufen)) ?>" data-suche="<?= e($suche) ?>">
+<article class="karte" style="--f:<?= e($fach['farbe']) ?>" data-fach="<?= e(implode(' ', $schluessel)) ?>" data-zyklen="<?= e(implode(' ', $stufen)) ?>" data-suche="<?= e($suche) ?>">
   <div class="karte-bild">
     <?= $bild ?>
     <?php if ($links): ?><div class="abzeichen links"><?= $links ?></div><?php endif; ?>
     <?php if ($rechts): ?><div class="abzeichen rechts"><?= $rechts ?></div><?php endif; ?>
   </div>
   <div class="karte-text">
-    <span class="karte-fach"><?= e($fach['name']) ?></span>
+    <span class="karte-fach"><?= e($fachText) ?></span>
     <h3><?= e($m['titel'] ?? '') ?></h3>
     <p><?= e($m['beschreibung'] ?? '') ?></p>
     <?php if ($meta): ?><ul class="karte-meta"><?= $meta ?></ul><?php endif; ?>

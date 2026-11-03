@@ -316,10 +316,10 @@ p{margin:0 0 1em}
 .login-karte .logo{width:88px;height:88px;border-radius:50%;margin:0 auto 14px;box-shadow:0 0 0 4px var(--papier),0 0 0 5px var(--linie)}
 .login-karte h1{text-align:center;font-size:2rem;margin-bottom:.2em}
 .login-karte .unterzeile{text-align:center;color:var(--tinte-weich);margin-bottom:24px}
-.feld{display:grid;gap:6px;margin-bottom:16px}
+.feld{display:grid;gap:6px;margin-bottom:16px;align-content:start}
 .feld label{font-weight:800;font-size:.95rem}
-.feld input{font:inherit;width:100%;padding:.75em .95em;border-radius:var(--radius-klein);border:2px solid var(--linie);background:var(--creme);color:var(--tinte);transition:border-color .15s,box-shadow .15s}
-.feld input:focus{outline:none;border-color:var(--tinte);box-shadow:0 0 0 4px rgba(247,161,92,.35);background:#fff}
+.feld input:not([type=radio]):not([type=checkbox]):not([type=file]):not([type=color]){font:inherit;width:100%;padding:.75em .95em;border-radius:var(--radius-klein);border:2px solid var(--linie);background:var(--creme);color:var(--tinte);transition:border-color .15s,box-shadow .15s}
+.feld input:not([type=radio]):not([type=checkbox]):not([type=file]):not([type=color]):focus{outline:none;border-color:var(--tinte);box-shadow:0 0 0 4px rgba(247,161,92,.35);background:#fff}
 .feld small{color:var(--tinte-weich)}
 .meldung{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius-klein);margin-bottom:18px;font-weight:700;font-size:.95rem}
 .meldung .icon{margin-top:.15em}
@@ -382,4 +382,125 @@ p{margin:0 0 1em}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+}
+
+/* ==========================================================
+   Verwaltung (nur für Administratoren)
+   ========================================================== */
+.verwaltung h1{font-size:clamp(1.8rem,3.4vw,2.4rem)}
+.badge-entwurf{background:#e9e4f7;border-color:#6b5aa6;color:#3f3270}
+.v-kopf{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.v-kopf h1{margin:0 0 .2em}
+.v-zahlen{display:flex;gap:8px;flex-wrap:wrap;margin:0}
+.v-zahlen span{font-weight:700;font-size:.9rem;background:var(--papier);border:1px solid var(--linie);border-radius:999px;padding:.25em .8em;color:var(--tinte-weich)}
+.v-beispiele{align-items:center;flex-wrap:wrap}
+.v-beispiele span{flex:1}
+.v-liste{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.v-eintrag{--f:var(--orange);display:grid;grid-template-columns:88px 1fr auto;gap:16px;align-items:center;background:var(--papier);border:2px solid var(--linie);border-radius:18px;padding:12px}
+.v-eintrag.ist-entwurf{border-style:dashed;background:#fdfbf8}
+.v-daumen{width:88px;height:66px;border-radius:12px;overflow:hidden;display:grid;place-items:center;background:color-mix(in srgb,var(--f) 16%,#fff);color:color-mix(in srgb,var(--f) 75%,#000)}
+.v-daumen img{width:100%;height:100%;object-fit:cover}
+.v-daumen .icon{width:30px;height:30px}
+.v-info{min-width:0;display:grid;gap:3px}
+.v-titelzeile{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.v-titelzeile strong{font-family:var(--schrift-titel);font-weight:600;font-size:1.1rem;margin-right:4px}
+.v-meta{font-size:.92rem;color:var(--tinte-weich)}
+.v-datei{font-size:.85rem;color:var(--tinte-weich);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v-datei .icon{width:1em;height:1em}
+.v-knoepfe{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.v-knoepfe form{margin:0}
+.v-ordnen{display:flex;gap:4px}
+.v-ordnen button .icon{transform:rotate(90deg)}
+.v-mini{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;border:2px solid var(--linie);background:var(--papier);color:var(--tinte);cursor:pointer;padding:0}
+.v-mini:hover:not([disabled]){border-color:var(--tinte)}
+.v-mini[disabled]{opacity:.35;cursor:not-allowed}
+.v-mini .icon{width:18px;height:18px}
+.v-loeschen:hover:not([disabled]){background:#fdecec;border-color:#c62828;color:#9b1c1f}
+.v-hinweis{font-size:.9rem;color:var(--tinte-weich);margin-top:14px}
+.v-zurueck{margin-bottom:10px}
+
+/* Formular */
+.v-raster{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+.v-schritte{display:grid;gap:18px}
+.v-schritt{margin:0;min-width:0;background:var(--papier);border:2px solid var(--linie);border-radius:var(--radius);padding:18px 22px 20px}
+.v-schritt legend{display:flex;align-items:center;gap:10px;font-family:var(--schrift-titel);font-weight:600;font-size:1.25rem;padding:0 6px;margin-left:-6px}
+.v-nr{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--orange);border:2px solid var(--tinte);font-size:1rem}
+.v-schritt .feld:last-child{margin-bottom:0}
+.feld textarea{font:inherit;width:100%;padding:.75em .95em;border-radius:var(--radius-klein);border:2px solid var(--linie);background:var(--creme);color:var(--tinte);resize:vertical}
+.feld textarea:focus{outline:none;border-color:var(--tinte);box-shadow:0 0 0 4px rgba(247,161,92,.35);background:#fff}
+.feld input[type="file"]{font:inherit;font-size:.95rem;padding:10px;border:2px dashed var(--linie);border-radius:var(--radius-klein);background:var(--creme)}
+.feld-titel{font-weight:800;font-size:.95rem}
+.feld-titel small{font-weight:400;color:var(--tinte-weich)}
+.feld-reihe{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pflicht{color:#c62828}
+.v-umschalter{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 12px}
+.v-umschalter label{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.95rem;background:var(--creme);border:2px solid var(--linie);border-radius:999px;padding:.45em 1em;cursor:pointer}
+.v-umschalter label:has(input:checked){border-color:var(--tinte);background:var(--orange-zart)}
+.v-umschalter input{accent-color:var(--orange-text);margin:0}
+.v-umschalter .icon{width:1em;height:1em}
+.v-check{display:flex;align-items:flex-start;gap:8px;font-size:.95rem;margin-top:8px;cursor:pointer}
+.v-check input{margin-top:.3em;accent-color:var(--orange-text)}
+.v-aktuell{font-size:.92rem;color:var(--tinte-weich);margin:10px 0 0}
+.v-aktuell .icon{width:1em;height:1em}
+.dropzone{display:grid;justify-items:center;gap:6px;text-align:center;padding:26px 18px;border:2.5px dashed var(--holz-hell);border-radius:18px;background:var(--creme);cursor:pointer;transition:border-color .15s,background-color .15s}
+.dropzone:hover,.dropzone.drueber{border-color:var(--orange-text);background:var(--orange-zart)}
+.dropzone.hat-datei{border-style:solid;border-color:var(--gruen);background:#eef8f1}
+.dropzone.zu-gross{border-color:#c62828;background:#fdecec}
+.dropzone input{position:absolute;width:1px;height:1px;opacity:0}
+.dropzone:focus-within{outline:3px solid var(--blau);outline-offset:3px}
+.dropzone-icon{width:40px;height:40px;color:var(--orange-text);transform:rotate(180deg)}
+.dropzone-text{font-family:var(--schrift-titel);font-weight:600;font-size:1.1rem}
+.dropzone small{color:var(--tinte-weich)}
+.dropzone-datei{font-weight:800;color:var(--tinte);word-break:break-all}
+.icon-hoch{transform:rotate(180deg)}
+.auswahl{display:flex;flex-wrap:wrap;gap:8px}
+.auswahl-chip{--f:var(--tinte-weich);display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:.95rem;background:var(--papier);border:2px solid var(--linie);border-radius:999px;padding:.4em .9em .4em .7em;cursor:pointer;user-select:none}
+.auswahl-chip .icon{width:1.1em;height:1.1em;color:color-mix(in srgb,var(--f) 75%,#000)}
+.auswahl-chip input{position:absolute;opacity:0;width:1px;height:1px}
+.auswahl-chip:has(input:checked){border-color:var(--tinte);background:color-mix(in srgb,var(--f) 18%,#fff);box-shadow:0 2px 0 var(--tinte)}
+.auswahl-chip:has(input:focus-visible){outline:3px solid var(--blau);outline-offset:2px}
+.v-speichern{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.v-vorschau{position:sticky;top:96px;display:grid;gap:6px}
+.v-vorschau-text{font-size:.92rem;color:var(--tinte-weich);margin:0 0 6px}
+.v-vorschau-karte .karte{pointer-events:none}
+.v-vorschau-karte .karte:hover{transform:none;box-shadow:none}
+
+/* Fächer */
+.v-schmal{max-width:820px}
+.v-faecher{list-style:none;margin:24px 0;padding:0;display:grid;gap:10px}
+.v-fach{--f:var(--orange);background:var(--papier);border:2px solid var(--linie);border-left:8px solid var(--f);border-radius:16px;padding:10px 14px}
+.v-fach-zeile{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.v-fach-zeile form{margin:0}
+.v-fach-zeile strong{font-family:var(--schrift-titel);font-weight:600;font-size:1.1rem;flex:1}
+.v-fach-symbol{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:color-mix(in srgb,var(--f) 18%,#fff);color:color-mix(in srgb,var(--f) 75%,#000)}
+.v-fach-symbol .icon{width:20px;height:20px}
+.v-fach-anzahl{font-size:.9rem;color:var(--tinte-weich)}
+.v-fach details{margin-top:6px}
+.v-fach summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;font-size:.92rem;color:var(--orange-text)}
+.v-fach summary .icon{width:1em;height:1em}
+.v-fach-form{margin-top:12px;padding-top:12px;border-top:1px dashed var(--linie)}
+.v-fach-neu h2{display:flex;align-items:center;gap:8px;font-size:1.3rem}
+.v-fach-neu h2 .icon{color:var(--orange-text)}
+.feld-farbe input[type="color"]{width:64px;height:46px;padding:4px;border-radius:12px;border:2px solid var(--linie);background:var(--creme);cursor:pointer}
+.symbol-auswahl{--f:var(--orange);display:flex;flex-wrap:wrap;gap:6px}
+.symbol-auswahl label{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;border:2px solid var(--linie);background:var(--papier);cursor:pointer;color:color-mix(in srgb,var(--f) 75%,#000)}
+.symbol-auswahl label:has(input:checked){border-color:var(--tinte);background:color-mix(in srgb,var(--f) 20%,#fff);box-shadow:0 2px 0 var(--tinte)}
+.symbol-auswahl label:has(input:focus-visible){outline:3px solid var(--blau);outline-offset:2px}
+.symbol-auswahl input{position:absolute;opacity:0;width:1px;height:1px}
+.symbol-auswahl .icon{width:20px;height:20px}
+
+/* Mein Bereich: Karte für Administratoren */
+.box-admin{border-color:var(--tinte);box-shadow:4px 4px 0 var(--orange)}
+.box-admin .knopf-reihe{margin-top:12px}
+
+@media (max-width:980px){
+  .v-raster{grid-template-columns:1fr}
+  .v-vorschau{position:static;max-width:360px}
+}
+@media (max-width:700px){
+  .v-eintrag{grid-template-columns:64px 1fr}
+  .v-daumen{width:64px;height:52px}
+  .v-knoepfe{grid-column:1/-1;justify-content:flex-start}
+  .feld-reihe{grid-template-columns:1fr}
+  .v-schritt{padding:14px 14px 16px}
 }

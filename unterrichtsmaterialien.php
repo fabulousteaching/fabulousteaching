@@ -13,8 +13,10 @@ $materialien = $daten['materialien'];
 // Wie viele Materialien pro Fach?
 $anzahl = array_fill_keys(array_keys($faecher), 0);
 foreach ($materialien as $m) {
-    if (isset($anzahl[$m['fach'] ?? ''])) {
-        $anzahl[$m['fach']]++;
+    foreach ($m['faecher'] as $k) {
+        if (isset($anzahl[$k])) {
+            $anzahl[$k]++;
+        }
     }
 }
 

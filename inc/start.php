@@ -13,9 +13,14 @@ const INSTAGRAM_URL   = 'https://www.instagram.com/fabulous_teaching/';
 const BENUTZER_DATEI  = __DIR__ . '/../daten/benutzer.php';
 const MATERIAL_DATEI  = __DIR__ . '/../daten/materialien.php';
 const GESCHUETZT_ORDNER = __DIR__ . '/../daten/dateien';
+// Was in der Verwaltung angelegt wird, liegt nur auf dem Server (nie im Repository):
+const INHALT_DATEI     = __DIR__ . '/../daten/inhalt.json';
+const SICHERUNG_ORDNER = __DIR__ . '/../daten/sicherung';
+const UPLOAD_ORDNER    = __DIR__ . '/../uploads';
 
 require_once __DIR__ . '/icons.php';
 require_once __DIR__ . '/bausteine.php';
+require_once __DIR__ . '/inhalt.php';
 
 // ---------- Sitzung ----------
 $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
@@ -112,13 +117,53 @@ function sicheres_ziel(?string $ziel): string
     return $ziel;
 }
 
-/** Unterrichtsmaterialien aus daten/materialien.php */
-function materialien_laden(): array
+// ---------- Konten und Rollen ----------
+// Ein Konto ist entweder nur ein Passwort-Hash (ältere Form = Administrator)
+// oder ['hash' => '…', 'rolle' => 'admin' | 'mitglied'].
+
+function konto_hash($eintrag): string
 {
-    $daten = include MATERIAL_DATEI;
-    return [
-        'faecher'     => $daten['faecher'] ?? [],
-        'zyklen'      => $daten['zyklen'] ?? [],
-        'materialien' => $daten['materialien'] ?? [],
-    ];
+    return is_array($eintrag) ? (string) ($eintrag['hash'] ?? '') : (string) $eintrag;
+}
+
+function konto_rolle($eintrag): string
+{
+    return is_array($eintrag) ? (string) ($eintrag['rolle'] ?? 'mitglied') : 'admin';
+}
+
+function ist_admin(): bool
+{
+    $wer = angemeldet();
+    if ($wer === null) {
+        return false;
+    }
+    $konten = benutzer_laden();
+    return isset($konten[$wer]) && konto_rolle($konten[$wer]) === 'admin';
+}
+
+/** Nur für Administratoren: sonst Login bzw. «kein Zugriff». */
+function verwaltung_erforderlich(): void
+{
+    login_erforderlich();
+    if (!ist_admin()) {
+        http_response_code(403);
+        exit('Kein Zugriff: Diese Seite ist nur für Administratoren.');
+    }
+}
+
+/** Kurze Meldung für die nächste Seite (nach einer Weiterleitung). */
+function meldung_setzen(string $text, string $art = 'ok'): void
+{
+    $_SESSION['meldung'] = [$text, $art];
+}
+
+function meldung_ausgeben(): string
+{
+    if (empty($_SESSION['meldung'])) {
+        return '';
+    }
+    [$text, $art] = $_SESSION['meldung'];
+    unset($_SESSION['meldung']);
+    $icon = $art === 'fehler' ? 'x' : 'shield-check';
+    return '<div class="meldung meldung-' . e($art) . '" role="status">' . icon($icon) . '<span>' . e($text) . '</span></div>';
 }

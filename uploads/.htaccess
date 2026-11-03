@@ -1,0 +1,8 @@
+# Hochgeladene Dateien: nie als Programm ausführen, kein Ordner-Verzeichnis
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php\d?|phtml|phar|pht|phps|cgi|pl|py|sh|html?|svg|js)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+</IfModule>

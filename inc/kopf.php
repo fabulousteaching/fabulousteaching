@@ -32,8 +32,8 @@ $menue = [
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/fredoka-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/nunito-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/stil.css?v=1">
-<script src="assets/js/main.js?v=1" defer></script>
+<link rel="stylesheet" href="assets/css/stil.css?v=<?= filemtime(__DIR__ . '/../assets/css/stil.css') ?>">
+<script src="assets/js/main.js?v=<?= filemtime(__DIR__ . '/../assets/js/main.js') ?>" defer></script>
 </head>
 <body class="seite-<?= e($seite) ?>">
 <a class="skip" href="#inhalt">Zum Inhalt springen</a>

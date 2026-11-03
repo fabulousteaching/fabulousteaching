@@ -288,7 +288,7 @@ p{margin:0 0 1em}
   padding:12px 14px 10px;background:#fff;border:2px solid var(--tinte);border-radius:10px;box-shadow:0 3px 0 rgba(47,42,38,.35)}
 .tuer-logo .kolben{width:auto;height:72px}
 .tuer-logo .wortmarke{font-family:"Fredoka",var(--schrift-titel);font-weight:600;font-size:1.2rem;letter-spacing:-.01em;line-height:1;color:#000;white-space:nowrap}
-.tuer-logo .blau{color:#0075BA}
+.tuer-logo .akzent{color:#E46F12}
 .tuer-feld{position:absolute;left:20px;right:20px;bottom:20px;height:70px;border:2px solid rgba(47,42,38,.35);border-radius:6px;background:rgba(255,255,255,.1)}
 .tuer-griff{position:absolute;right:14px;top:60%;width:16px;height:16px;border-radius:50%;background:#efe7dc;border:2px solid var(--tinte);box-shadow:0 2px 0 var(--tinte)}
 /* Lichtschein auf dem Boden */

@@ -41,41 +41,44 @@ require __DIR__ . '/inc/kopf.php';
 <section class="abschnitt" style="padding-top:8px" aria-label="Materialien">
   <div class="huelle" id="materialien">
 
-    <div class="faecher" role="group" aria-label="Nach Fach filtern">
-      <button class="fach-kachel" type="button" data-fach="" aria-pressed="true" style="--f:#f7a15c">
-        <span class="fach-symbol"><?= icon('sparkles') ?></span>
-        <span class="fach-name">Alle Fächer</span>
-        <span class="fach-anzahl"><?= count($materialien) ?> Materialien</span>
+    <!-- Reiter: ein Reiter pro Fach (Fächer werden in daten/materialien.php gepflegt) -->
+    <div class="reiter-leiste">
+    <button class="reiter-pfeil links" type="button" aria-label="Weitere Fächer links" hidden><?= icon('chevron-left') ?></button>
+    <div class="reiter" role="group" aria-label="Fächer">
+      <button class="reiter-tab" type="button" data-fach="" aria-pressed="true" style="--f:#f7a15c">
+        <?= icon('sparkles') ?><span>Alle</span><span class="reiter-zahl"><?= count($materialien) ?></span>
       </button>
       <?php foreach ($faecher as $schluessel => $f): ?>
-        <button class="fach-kachel" type="button" data-fach="<?= e($schluessel) ?>" aria-pressed="false" style="--f:<?= e($f['farbe']) ?>">
-          <span class="fach-symbol"><?= icon($f['icon']) ?></span>
-          <span class="fach-name"><?= e($f['name']) ?></span>
-          <span class="fach-anzahl"><?= $anzahl[$schluessel] ?> <?= $anzahl[$schluessel] === 1 ? 'Material' : 'Materialien' ?></span>
+        <button class="reiter-tab" type="button" data-fach="<?= e($schluessel) ?>" aria-pressed="false" style="--f:<?= e($f['farbe']) ?>">
+          <?= icon($f['icon']) ?><span><?= e($f['name']) ?></span><span class="reiter-zahl"><?= $anzahl[$schluessel] ?></span>
         </button>
       <?php endforeach; ?>
     </div>
+    <button class="reiter-pfeil rechts" type="button" aria-label="Weitere Fächer rechts" hidden><?= icon('chevron-right') ?></button>
+    </div>
 
-    <div class="filterleiste">
-      <div class="chips" role="group" aria-label="Nach Zyklus filtern">
-        <span class="chips-titel">Stufe:</span>
-        <button class="chip" type="button" data-zyklus="" aria-pressed="true">Alle</button>
-        <?php foreach ($zyklen as $nr => $name): ?>
-          <button class="chip" type="button" data-zyklus="<?= (int) $nr ?>" aria-pressed="false"><?= e($name) ?></button>
-        <?php endforeach; ?>
+    <div class="reiter-inhalt">
+      <div class="filterleiste">
+        <div class="chips" role="group" aria-label="Nach Zyklus filtern">
+          <span class="chips-titel">Stufe:</span>
+          <button class="chip" type="button" data-zyklus="" aria-pressed="true">Alle</button>
+          <?php foreach ($zyklen as $nr => $name): ?>
+            <button class="chip" type="button" data-zyklus="<?= (int) $nr ?>" aria-pressed="false"><?= e($name) ?></button>
+          <?php endforeach; ?>
+        </div>
+        <p class="treffer" aria-live="polite"><span id="treffer-zahl"><?= count($materialien) ?></span> Materialien</p>
       </div>
-      <p class="treffer" aria-live="polite"><span id="treffer-zahl"><?= count($materialien) ?></span> Materialien</p>
-    </div>
 
-    <div class="raster" id="raster">
-      <?php foreach ($materialien as $m) { echo material_karte($m, $faecher, $zyklen); } ?>
-    </div>
+      <div class="raster" id="raster">
+        <?php foreach ($materialien as $m) { echo material_karte($m, $faecher, $zyklen); } ?>
+      </div>
 
-    <div class="leer" id="leer" hidden>
-      <?= icon('search') ?>
-      <h3>Nichts gefunden</h3>
-      <p>Zu dieser Auswahl gibt es (noch) kein Material.</p>
-      <button class="knopf knopf-klein knopf-hell" type="button" id="filter-zurueck">Filter zurücksetzen</button>
+      <div class="leer" id="leer" hidden>
+        <?= icon('search') ?>
+        <h3>Nichts gefunden</h3>
+        <p>Zu dieser Auswahl gibt es (noch) kein Material.</p>
+        <button class="knopf knopf-klein knopf-hell" type="button" id="filter-zurueck">Filter zurücksetzen</button>
+      </div>
     </div>
 
   </div>

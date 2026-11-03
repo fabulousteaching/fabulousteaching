@@ -43,6 +43,8 @@ const ICONS = [
     'wand-sparkles' => '<path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/> <path d="m14 7 3 3"/> <path d="M5 6v4"/> <path d="M19 14v4"/> <path d="M10 2v2"/> <path d="M7 8H3"/> <path d="M21 16h-4"/> <path d="M11 3H9"/>',
     'chart-no-axes-column-increasing' => '<line x1="12" x2="12" y1="20" y2="10"/> <line x1="18" x2="18" y1="20" y2="4"/> <line x1="6" x2="6" y1="20" y2="16"/>',
     'mouse-pointer-click' => '<path d="M14 4.1 12 6"/> <path d="m5.1 8-2.9-.8"/> <path d="m6 12-1.9 2"/> <path d="M7.2 2.2 8 5.1"/> <path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/>',
+    'chevron-left' => '<path d="m15 18-6-6 6-6"/>',
+    'chevron-right' => '<path d="m9 18 6-6-6-6"/>',
 ];
 
 function icon(string $name, string $klasse = ''): string

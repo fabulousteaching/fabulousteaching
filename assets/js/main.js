@@ -35,7 +35,7 @@
   if (!raster) return;
 
   var karten = Array.prototype.slice.call(raster.querySelectorAll('.karte'));
-  var fachKnoepfe = Array.prototype.slice.call(document.querySelectorAll('.fach-kachel'));
+  var fachKnoepfe = Array.prototype.slice.call(document.querySelectorAll('.reiter-tab'));
   var zyklusKnoepfe = Array.prototype.slice.call(document.querySelectorAll('.chip[data-zyklus]'));
   var suchfeld = document.getElementById('suchfeld');
   var zahl = document.getElementById('treffer-zahl');
@@ -82,7 +82,10 @@
   }
 
   fachKnoepfe.forEach(function (b) {
-    b.addEventListener('click', function () { zustand.fach = b.getAttribute('data-fach'); anwenden(true); });
+    b.addEventListener('click', function () {
+      zustand.fach = b.getAttribute('data-fach'); anwenden(true);
+      if (b.scrollIntoView) b.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    });
   });
   zyklusKnoepfe.forEach(function (b) {
     b.addEventListener('click', function () { zustand.zyklus = b.getAttribute('data-zyklus'); anwenden(true); });
@@ -96,6 +99,23 @@
       if (suchfeld) suchfeld.value = '';
       anwenden(true);
     });
+  }
+
+  // Pfeile, wenn nicht alle Reiter Platz haben
+  var leiste = document.querySelector('.reiter');
+  var pfeilL = document.querySelector('.reiter-pfeil.links');
+  var pfeilR = document.querySelector('.reiter-pfeil.rechts');
+  if (leiste && pfeilL && pfeilR) {
+    var pfeile = function () {
+      var max = leiste.scrollWidth - leiste.clientWidth;
+      pfeilL.hidden = leiste.scrollLeft <= 2;
+      pfeilR.hidden = leiste.scrollLeft >= max - 2;
+    };
+    pfeilL.addEventListener('click', function () { leiste.scrollBy({ left: -leiste.clientWidth * 0.7 }); });
+    pfeilR.addEventListener('click', function () { leiste.scrollBy({ left: leiste.clientWidth * 0.7 }); });
+    leiste.addEventListener('scroll', pfeile, { passive: true });
+    window.addEventListener('resize', pfeile);
+    pfeile();
   }
 
   anwenden(false);

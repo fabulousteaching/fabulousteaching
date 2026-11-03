@@ -18,17 +18,50 @@ Rätsellabor und Login-Bereich. Farben und Stil kommen aus dem Logo
 Gemeinsame Teile liegen in `inc/` (Kopf mit Navigation, Fusszeile, Symbole),
 die Gestaltung in `assets/css/stil.css`.
 
-## Auf Infomaniak hochladen
+## Automatisch veröffentlichen (GitHub → Infomaniak)
 
-1. Im Infomaniak-Manager die Website *fabulousteaching.ch* öffnen und
-   PHP 8.1 oder neuer einstellen (Standard bei neuen Sites).
-2. Den **Inhalt** dieses Repositorys per FTP (z. B. FileZilla)
-   oder mit dem Web-FTP in das Hauptverzeichnis der Site laden – also so, dass
-   `index.php` direkt im Web-Ordner liegt. Die versteckten Dateien `.htaccess`
-   unbedingt mitkopieren (sie sperren `inc/` und `daten/`).
-3. Im Manager unter *SSL/HTTPS* das Zertifikat aktivieren und «HTTPS erzwingen» einschalten.
-4. **Sofort** `https://fabulousteaching.ch/login.php` öffnen und dein Konto
+Jede Änderung auf dem Branch `main` wird automatisch per verschlüsseltem FTP
+(FTPS) auf fabulousteaching.ch hochgeladen
+(`.github/workflows/veroeffentlichen.yml`). Auf dem Server wird dabei **nichts
+gelöscht**: Dein Konto, geschützte Dateien und andere Ordner (z. B. ein
+Rätsellabor-Ordner) bleiben unangetastet.
+
+### Einmalig einrichten
+
+1. **Infomaniak:** Im Manager beim Webhosting unter «FTP / SSH» ein FTP-Konto
+   anlegen (oder ein bestehendes nehmen). Notieren:
+   - Server-Adresse (sieht etwa so aus: `xxxx.ftp.infomaniak.com`)
+   - Benutzername und Passwort
+2. **Web-Ordner prüfen:** In den Einstellungen der Website *fabulousteaching.ch*
+   steht, in welchem Ordner sie liegt – meist `/sites/fabulousteaching.ch`.
+   Ist es ein anderer Ordner, siehe Schritt 3 «Variable».
+3. **GitHub:** Im Repository *Settings → Secrets and variables → Actions*:
+   - unter **Secrets** → *New repository secret* drei Einträge anlegen:
+     `FTP_SERVER` (die Server-Adresse), `FTP_USERNAME`, `FTP_PASSWORD`
+   - nur falls der Web-Ordner nicht `/sites/fabulousteaching.ch` ist: unter
+     **Variables** → `FTP_ORDNER` mit dem richtigen Ordner anlegen
+     (wenn das FTP-Konto direkt im Web-Ordner startet: `.`)
+4. **Ersten Upload starten:** Im Repository *Actions → «Auf Infomaniak
+   veröffentlichen» → Run workflow*. Nach ca. 1 Minute ist die Seite online.
+5. **Sofort** `https://fabulousteaching.ch/login.php` öffnen und dein Konto
    einrichten. Danach ist die Einrichtung gesperrt.
+6. Im Infomaniak-Manager das SSL-Zertifikat aktivieren und «HTTPS erzwingen»
+   einschalten; PHP 8.1 oder neuer einstellen (Standard bei neuen Sites).
+
+Gut zu wissen:
+- Dateien mit gleichem Namen auf dem Server werden überschrieben. Eine alte
+  `index.html` stört nicht – `index.php` hat Vorrang.
+- Wird eine Datei aus dem Repository gelöscht, bleibt sie auf dem Server
+  liegen. Bei Bedarf per FTP von Hand entfernen.
+- Schlägt ein Upload fehl, zeigt GitHub unter *Actions* den Grund
+  (z. B. «Login failed» = Zugangsdaten falsch, «No such file or directory» = Ordner falsch).
+
+### Ohne GitHub (von Hand)
+
+Den **Inhalt** dieses Repositorys (ohne `.git`, `.github`, `README.md`) per FTP
+(z. B. FileZilla) oder Web-FTP in den Web-Ordner laden – so, dass `index.php`
+direkt darin liegt. Die versteckten `.htaccess`-Dateien unbedingt mitkopieren
+(sie sperren `inc/` und `daten/`).
 
 ## Inhalte anpassen
 

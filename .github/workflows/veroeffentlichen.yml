@@ -1,0 +1,88 @@
+# Lädt die Webseite bei jeder Änderung auf main zu Infomaniak hoch (fabulousteaching.ch).
+#
+# Einmalig einrichten (siehe README, «Automatisch veröffentlichen»):
+#   GitHub → Settings → Secrets and variables → Actions
+#     Secrets:   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
+#     Variable:  FTP_ORDNER (nur nötig, wenn der Web-Ordner nicht /sites/fabulousteaching.ch ist)
+#
+# Es werden nur Dateien hochgeladen bzw. überschrieben – auf dem Server wird nichts gelöscht.
+# Dein Konto (daten/benutzer.php) und geschützte Dateien (daten/dateien/) bleiben also erhalten.
+
+name: Auf Infomaniak veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: infomaniak
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  hochladen:
+    name: Webseite hochladen
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+      FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+      LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      ZIEL: ${{ vars.FTP_ORDNER || '/sites/fabulousteaching.ch' }}
+    steps:
+      - name: Zugangsdaten vorhanden?
+        id: pruefen
+        run: |
+          if [ -z "$FTP_SERVER" ] || [ -z "$FTP_USERNAME" ] || [ -z "$LFTP_PASSWORD" ]; then
+            echo "::warning title=Noch nicht eingerichtet::Die FTP-Zugangsdaten fehlen (FTP_SERVER, FTP_USERNAME, FTP_PASSWORD). Siehe README, Abschnitt «Automatisch veröffentlichen». Es wurde nichts hochgeladen."
+            echo "bereit=nein" >> "$GITHUB_OUTPUT"
+          else
+            echo "bereit=ja" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Dateien holen
+        if: steps.pruefen.outputs.bereit == 'ja'
+        uses: actions/checkout@v4
+
+      - name: PHP-Dateien auf Fehler prüfen
+        if: steps.pruefen.outputs.bereit == 'ja'
+        run: |
+          find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
+
+      - name: lftp installieren
+        if: steps.pruefen.outputs.bereit == 'ja'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lftp
+
+      - name: Per FTPS zu Infomaniak hochladen
+        if: steps.pruefen.outputs.bereit == 'ja'
+        run: |
+          # Servername ohne «ftp://» und ohne Schrägstrich am Ende
+          SERVER="${FTP_SERVER#ftp://}"; SERVER="${SERVER#ftps://}"; SERVER="${SERVER%/}"
+          lftp <<EOF
+          set cmd:fail-exit yes
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate true
+          set net:max-retries 3
+          set net:timeout 30
+          open --env-password -u "$FTP_USERNAME" "ftp://$SERVER"
+          cd "$ZIEL"
+          mirror --reverse --verbose --parallel=4 \
+            --exclude-glob .git/ \
+            --exclude-glob .github/ \
+            --exclude-glob .gitignore \
+            --exclude-glob README.md \
+            . .
+          bye
+          EOF
+
+      - name: Fertig
+        if: steps.pruefen.outputs.bereit == 'ja'
+        run: |
+          echo "### Die Webseite ist online: https://fabulousteaching.ch" >> "$GITHUB_STEP_SUMMARY"
+          echo "Beim allerersten Upload sofort https://fabulousteaching.ch/login.php öffnen und dein Konto einrichten." >> "$GITHUB_STEP_SUMMARY"

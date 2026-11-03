@@ -45,15 +45,19 @@ require __DIR__ . '/inc/kopf.php';
         <span class="sr">Rätsellabor öffnen (neuer Tab)</span>
         <span class="tuer-rahmen" aria-hidden="true">
           <span class="tuer-raum">
-            <span class="raum-blasen"><i></i><i></i><i></i><i></i></span>
-            <span class="raum-symbol"><?= icon('puzzle') ?></span>
             <span class="raum-text">Eintreten <?= icon('arrow-right') ?></span>
           </span>
           <span class="tuer-blatt">
-            <span class="tuer-schild">Rätsellabor</span>
-            <span class="tuer-bullauge"><?= icon('flask-conical') ?></span>
-            <span class="tuer-feld"></span>
-            <span class="tuer-griff"></span>
+            <span class="tuer-vorne">
+              <!-- Logo des Rätsellabors («Puzzle-Kolben»), übernommen von raetsellabor.fabulousteaching.ch -->
+              <span class="tuer-logo">
+                <svg class="kolben" viewBox="0 4 100 160"><circle cx="34" cy="21" r="5.2" fill="#0075BA"/><circle cx="42" cy="13" r="5.6" fill="#0075BA"/><circle cx="54" cy="12" r="5.8" fill="#0075BA"/><circle cx="64" cy="19" r="5.4" fill="#0075BA"/><circle cx="66" cy="31" r="5" fill="#0075BA"/><circle cx="60" cy="41" r="4.6" fill="#0075BA"/><circle cx="53" cy="49" r="4.2" fill="#0075BA"/><circle cx="50" cy="59" r="3.8" fill="#0075BA"/><circle cx="50" cy="72" r="3.5" fill="#0075BA"/><circle cx="51" cy="94" r="2.4" fill="#0075BA"/><circle cx="48.5" cy="103" r="1.8" fill="#0075BA"/><path d="M27.4 132 H42 C44 129 40 124 44.5 121 C47 119.3 53 119.3 55.5 121 C60 124 56 129 58 132 H72.6 L84 152 Q88 160 79 160 H21 Q12 160 16 152 Z" fill="#0075BA"/><path d="M40 82 V110 L16 152 Q12 160 21 160 H79 Q88 160 84 152 L60 110 V82" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 82 H67" fill="none" stroke="#000" stroke-width="5" stroke-linecap="round"/></svg>
+                <span class="wortmarke">Rätsel<span class="blau">labor</span></span>
+              </span>
+              <span class="tuer-feld"></span>
+              <span class="tuer-griff"></span>
+            </span>
+            <span class="tuer-hinten"></span>
           </span>
         </span>
         <span class="tuer-licht" aria-hidden="true"></span>

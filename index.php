@@ -10,8 +10,13 @@ $vorschau = $daten['materialien'];
 usort($vorschau, fn($a, $b) => (int) !empty($b['neu']) <=> (int) !empty($a['neu']));
 $neu = array_slice($vorschau, 0, 3);
 
-// Foto für "Über mich": einfach als assets/bilder/ueber-mich.jpg hochladen
-$foto = is_file(__DIR__ . '/assets/bilder/ueber-mich.jpg') ? 'assets/bilder/ueber-mich.jpg' : null;
+// Foto für "Über mich" (Hochformat 4:5): assets/bilder/ueber-mich.webp (oder .jpg)
+// Optional: ueber-mich-bein.webp = freigestelltes Bein, das unten aus dem Rahmen hängt
+$foto = null;
+foreach (['ueber-mich.webp', 'ueber-mich.jpg'] as $datei) {
+    if (is_file(__DIR__ . '/assets/bilder/' . $datei)) { $foto = 'assets/bilder/' . $datei; break; }
+}
+$bein = is_file(__DIR__ . '/assets/bilder/ueber-mich-bein.webp') ? 'assets/bilder/ueber-mich-bein.webp' : null;
 
 require __DIR__ . '/inc/kopf.php';
 ?>
@@ -39,14 +44,22 @@ require __DIR__ . '/inc/kopf.php';
 <!-- ============ Über mich ============ -->
 <section class="abschnitt ueber" id="ueber-mich" aria-labelledby="ueber-titel">
   <div class="huelle ueber-innen">
-    <figure class="foto-rahmen">
-      <?php if ($foto): ?>
-        <img src="<?= e($foto) ?>" alt="Porträt" width="800" height="1000">
-      <?php else: ?>
-        <div class="foto-platzhalter"><?= icon('user') ?><span>Hier kommt<br>dein Foto hin</span></div>
-      <?php endif; ?>
-      <figcaption>Das bin ich!</figcaption>
-    </figure>
+    <div class="foto-buehne<?= ($foto && $bein) ? ' mit-bein' : '' ?>">
+      <figure class="foto-rahmen">
+        <?php if ($foto): ?>
+          <div class="foto-fenster">
+            <img class="foto-bild" src="<?= e($foto) ?>" width="800" height="1000"
+                 alt="Porträtfoto: Ich sitze in einem weissen Kasten, ein Bein baumelt heraus.">
+            <?php if ($bein): ?>
+              <img class="foto-bein" src="<?= e($bein) ?>" width="800" height="579" alt="">
+            <?php endif; ?>
+          </div>
+        <?php else: ?>
+          <div class="foto-platzhalter"><?= icon('user') ?><span>Hier kommt<br>dein Foto hin</span></div>
+        <?php endif; ?>
+        <figcaption>Das bin ich!</figcaption>
+      </figure>
+    </div>
 
     <div class="ueber-text">
       <span class="vorzeile-klein">Über mich</span>

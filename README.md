@@ -66,8 +66,10 @@ direkt darin liegt. Die versteckten `.htaccess`-Dateien unbedingt mitkopieren
 ## Inhalte anpassen
 
 - **Über-mich-Text:** in `index.php` beim Kommentar `TODO` den Platzhalter ersetzen.
-- **Foto:** als `assets/bilder/ueber-mich.jpg` hochladen (Hochformat, etwa 800 × 1000 px).
-  Es erscheint dann automatisch statt des Platzhalters.
+- **Foto:** `assets/bilder/ueber-mich.webp` (Hochformat 4:5, 800 × 1000 px). Dazu gehört
+  `assets/bilder/ueber-mich-bein.webp`: das freigestellte Bein, das unten aus dem Rahmen
+  hängt (gleiche Breite, beginnt 8 px oberhalb der Foto-Unterkante). Ohne diese Datei wird
+  das Foto einfach normal im Rahmen gezeigt.
 - **Materialien:** alles in `daten/materialien.php` – oben in der Datei ist
   beschrieben, welche Felder es gibt. Die Einträge mit `'beispiel' => true`
   sind Platzhalter und können gelöscht werden.

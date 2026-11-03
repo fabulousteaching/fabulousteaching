@@ -34,11 +34,32 @@ require __DIR__ . '/inc/kopf.php';
     </div>
 
     <aside class="tuer" aria-labelledby="tuer-titel">
-      <div class="tuer-symbol"><?= icon('flask-conical') ?></div>
       <h2 id="tuer-titel">Bereit für das erste Rätsel?</h2>
-      <p>Die Labortür steht offen.</p>
-      <a class="knopf" href="<?= e(RAETSELLABOR_URL) ?>" target="_blank" rel="noopener">Rätsellabor öffnen <?= icon('external-link') ?></a>
-      <span class="adresse"><?= e(preg_replace('#^https?://#', '', RAETSELLABOR_URL)) ?></span>
+      <p class="tuer-hinweis">
+        <span class="nur-maus">Fahr mit der Maus über die Tür …</span>
+        <span class="nur-touch">Tippe auf die Tür, um einzutreten.</span>
+      </p>
+
+      <!-- Die Labortür: öffnet sich beim Darüberfahren, ein Klick führt ins Rätsellabor -->
+      <a class="labortuer" href="<?= e(RAETSELLABOR_URL) ?>" target="_blank" rel="noopener">
+        <span class="sr">Rätsellabor öffnen (neuer Tab)</span>
+        <span class="tuer-rahmen" aria-hidden="true">
+          <span class="tuer-raum">
+            <span class="raum-blasen"><i></i><i></i><i></i><i></i></span>
+            <span class="raum-symbol"><?= icon('puzzle') ?></span>
+            <span class="raum-text">Eintreten <?= icon('arrow-right') ?></span>
+          </span>
+          <span class="tuer-blatt">
+            <span class="tuer-schild">Rätsellabor</span>
+            <span class="tuer-bullauge"><?= icon('flask-conical') ?></span>
+            <span class="tuer-feld"></span>
+            <span class="tuer-griff"></span>
+          </span>
+        </span>
+        <span class="tuer-licht" aria-hidden="true"></span>
+      </a>
+
+      <a class="adresse" href="<?= e(RAETSELLABOR_URL) ?>" target="_blank" rel="noopener"><?= e(preg_replace('#^https?://#', '', RAETSELLABOR_URL)) ?> <?= icon('external-link') ?></a>
     </aside>
   </div>
 </section>

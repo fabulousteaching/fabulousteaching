@@ -18,6 +18,10 @@
         <li><a href="<?= angemeldet() ? 'bereich.php' : 'login.php' ?>"><?= angemeldet() ? 'Mein Bereich' : 'Login' ?></a></li>
       </ul>
     </nav>
+    <a class="fuss-insta" href="<?= e(INSTAGRAM_URL) ?>" target="_blank" rel="noopener">
+      <span class="fuss-insta-symbol"><?= icon('instagram') ?></span>
+      <span><small>Folge mir auf Instagram</small>@fabulous_teaching</span>
+    </a>
   </div>
   <p class="fuss-copy">© <?= date('Y') ?> fabulousteaching.ch</p>
 </footer>

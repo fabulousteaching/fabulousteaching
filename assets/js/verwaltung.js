@@ -114,7 +114,7 @@
 
       var meta = karte.querySelector('.karte-meta');
       if (!meta) { meta = document.createElement('ul'); meta.className = 'karte-meta'; karte.querySelector('p').after(meta); }
-      var teile = [wert('typ'), wert('umfang')].concat(gewaehlt('zyklen[]').map(function (z) { return z.getAttribute('data-name'); }));
+      var teile = [wert('typ'), wert('umfang')];
       meta.innerHTML = '';
       teile.filter(Boolean).forEach(function (t) { var li = document.createElement('li'); li.textContent = t; meta.appendChild(li); });
       meta.hidden = !meta.children.length;

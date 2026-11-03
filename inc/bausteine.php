@@ -82,9 +82,7 @@ function material_karte(array $m, array $faecher, array $zyklen): string
     $meta = '';
     if (!empty($m['typ']))    { $meta .= '<li>' . e($m['typ']) . '</li>'; }
     if (!empty($m['umfang'])) { $meta .= '<li>' . e($m['umfang']) . '</li>'; }
-    foreach ($stufen as $z) {
-        if (isset($zyklen[$z])) { $meta .= '<li>' . e($zyklen[$z]) . '</li>'; }
-    }
+    // Der Zyklus wird beim Hochladen erfasst, aber auf der Karte nicht angezeigt.
 
     ob_start(); ?>
 <article class="karte" style="--f:<?= e($fach['farbe']) ?>" data-fach="<?= e(implode(' ', $schluessel)) ?>" data-zyklen="<?= e(implode(' ', $stufen)) ?>" data-suche="<?= e($suche) ?>">

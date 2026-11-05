@@ -11,6 +11,7 @@
 @font-face{font-family:"Nunito";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/nunito-latin-400-normal.woff2") format("woff2")}
 @font-face{font-family:"Nunito";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/nunito-latin-400-italic.woff2") format("woff2")}
 @font-face{font-family:"Nunito";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/nunito-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:800;font-display:swap;src:url("../fonts/bricolage-grotesque-latin-800-normal.woff2") format("woff2")}
 @font-face{font-family:"Nunito";font-style:normal;font-weight:800;font-display:swap;src:url("../fonts/nunito-latin-800-normal.woff2") format("woff2")}
 
 /* ---------- Farben & Masse ---------- */
@@ -83,7 +84,7 @@ p{margin:0 0 1em}
 .marke:hover{color:var(--tinte)}
 .marke-logo{width:56px;height:56px;border-radius:50%;box-shadow:0 0 0 3px var(--papier),0 0 0 4px var(--linie),0 6px 14px -6px rgba(47,42,38,.35);transition:transform .3s ease}
 .marke:hover .marke-logo{transform:rotate(-8deg) scale(1.04)}
-.marke-text{font-family:var(--schrift-titel);font-weight:600;font-size:1.45rem;line-height:1;letter-spacing:-.01em}
+.marke-text{font-family:var(--schrift-titel);font-weight:600;font-size:1.45rem;line-height:1;letter-spacing:-.01em;white-space:nowrap}
 .marke-text b{font-weight:600;color:var(--orange-text)}
 
 .hauptmenue{display:flex;align-items:center;gap:18px}
@@ -99,7 +100,7 @@ p{margin:0 0 1em}
 .menue-knopf[aria-expanded="true"] .zu{display:none}
 .menue-knopf[aria-expanded="true"] .auf{display:block}
 
-@media (max-width:900px){
+@media (max-width:1040px){
   .marke-logo{width:48px;height:48px}
   .marke-text{font-size:1.25rem}
   .menue-knopf{display:grid}
@@ -321,6 +322,28 @@ p{margin:0 0 1em}
 @media (hover:none){
   .tuer-blatt{transform:rotateY(-24deg);animation:none}
   .tuer-licht{background-size:70% 100%}
+}
+
+/* ---------- Lerntools ---------- */
+.werkzeuge{display:grid;gap:28px}
+.werkzeug{--w:var(--orange);display:grid;grid-template-columns:220px minmax(0,1fr);gap:clamp(20px,4vw,44px);align-items:center;
+  background:var(--papier);border:2px solid var(--tinte);border-radius:calc(var(--radius) + 6px);padding:clamp(20px,3.5vw,36px);box-shadow:6px 6px 0 var(--w)}
+.werkzeug-logo{display:grid;place-items:center;aspect-ratio:1;border-radius:28px;background:color-mix(in srgb,var(--w) 10%,#fff);border:2px solid color-mix(in srgb,var(--w) 25%,#fff);transition:transform .25s ease}
+.werkzeug-logo:hover{transform:rotate(-4deg) scale(1.03)}
+.werkzeug-logo img{width:68%;height:auto}
+.werkzeug-text h2{margin:0}
+.vokaboom-name{font-family:"Bricolage Grotesque",var(--schrift-titel);font-weight:800;font-size:clamp(2.2rem,4.5vw,3rem);letter-spacing:-.03em;color:#161A33;line-height:1}
+.vokaboom-name span{background:linear-gradient(100deg,#4F46E5,#7C3AED 55%,#EC4899);-webkit-background-clip:text;background-clip:text;color:transparent}
+.werkzeug-unterzeile{font-family:var(--schrift-titel);font-weight:600;font-size:1.15rem;color:var(--tinte-weich);margin:.35em 0 .8em}
+.werkzeug-merkmale{list-style:none;margin:16px 0 22px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.werkzeug-merkmale li{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:.92rem;background:color-mix(in srgb,var(--w) 8%,#fff);
+  border:1.5px solid color-mix(in srgb,var(--w) 25%,#fff);border-radius:999px;padding:.35em .85em}
+.werkzeug-merkmale .icon{width:1.1em;height:1.1em;color:var(--w)}
+.knopf-vokaboom{background:linear-gradient(100deg,#4F46E5,#7C3AED);color:#fff;border-color:var(--tinte)}
+.knopf-vokaboom:hover{color:#fff}
+@media (max-width:720px){
+  .werkzeug{grid-template-columns:1fr}
+  .werkzeug-logo{width:140px}
 }
 
 /* ---------- Login & Mein Bereich ---------- */

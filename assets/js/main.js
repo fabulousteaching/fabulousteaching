@@ -19,7 +19,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && menue.classList.contains('offen')) { schliessen(); knopf.focus(); }
     });
-    window.matchMedia('(min-width: 901px)').addEventListener('change', function (m) { if (m.matches) schliessen(); });
+    window.matchMedia('(min-width: 1041px)').addEventListener('change', function (m) { if (m.matches) schliessen(); });
   }
 
   // ---------- Schatten unter der Kopfzeile beim Scrollen ----------

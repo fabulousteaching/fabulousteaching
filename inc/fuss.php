@@ -15,6 +15,7 @@
         <li><a href="index.php">Home</a></li>
         <li><a href="unterrichtsmaterialien.php">Unterrichtsmaterialien</a></li>
         <li><a href="raetsellabor.php">Rätsellabor</a></li>
+        <li><a href="lerntools.php">Lerntools</a></li>
         <li><a href="<?= angemeldet() ? 'bereich.php' : 'login.php' ?>"><?= angemeldet() ? 'Mein Bereich' : 'Login' ?></a></li>
       </ul>
     </nav>

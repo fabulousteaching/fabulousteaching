@@ -10,6 +10,7 @@ declare(strict_types=1);
 const SEITENNAME      = 'fabulous teaching';
 const RAETSELLABOR_URL = 'https://raetsellabor.fabulousteaching.ch';
 const INSTAGRAM_URL   = 'https://www.instagram.com/fabulous_teaching/';
+const VOKABOOM_URL    = 'https://vokaboom.fabulousteaching.ch';
 const BENUTZER_DATEI  = __DIR__ . '/../daten/benutzer.php';
 const MATERIAL_DATEI  = __DIR__ . '/../daten/materialien.php';
 const GESCHUETZT_ORDNER = __DIR__ . '/../daten/dateien';

@@ -56,7 +56,9 @@ function material_karte(array $m, array $faecher, array $zyklen): string
     ]), 'UTF-8');
 
     // Knopf: Link, Download, Login oder "folgt"
-    if (!empty($m['link'])) {
+    if (!RAETSELLABOR_OFFEN && $m['link'] !== '' && str_starts_with($m['link'], RAETSELLABOR_URL)) {
+        $knopf = '<span class="knopf knopf-klein aus" aria-disabled="true">' . icon('lock') . ' Bald verfügbar</span>';
+    } elseif (!empty($m['link'])) {
         $knopf = '<a class="knopf knopf-klein" href="' . e($m['link']) . '" target="_blank" rel="noopener">Öffnen ' . icon('external-link') . '</a>';
     } elseif (empty($m['datei'])) {
         $knopf = '<span class="knopf knopf-klein aus" aria-disabled="true">Folgt bald</span>';

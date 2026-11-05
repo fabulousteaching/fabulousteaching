@@ -52,9 +52,14 @@ require __DIR__ . '/inc/kopf.php';
     <aside class="tuer" aria-labelledby="tuer-titel">
       <h2 id="tuer-titel">Bereit für das erste Rätsel?</h2>
 
+      <?php if (RAETSELLABOR_OFFEN): ?>
       <!-- Die Labortür: öffnet sich beim Darüberfahren, ein Klick führt ins Rätsellabor -->
       <a class="labortuer" href="<?= e(RAETSELLABOR_URL) ?>" target="_blank" rel="noopener">
         <span class="sr">Rätsellabor öffnen (neuer Tab)</span>
+      <?php else: ?>
+      <!-- Verschlossen (Schalter RAETSELLABOR_OFFEN in inc/start.php): Schloss, kein Link -->
+      <div class="labortuer ist-zu" tabindex="0" role="img" aria-label="Die Labortür ist verschlossen: Das Rätsellabor ist noch nicht für die Öffentlichkeit bestimmt.">
+      <?php endif; ?>
         <span class="tuer-rahmen" aria-hidden="true">
           <span class="tuer-raum">
             <span class="raum-text">Eintreten <?= icon('arrow-right') ?></span>
@@ -67,12 +72,24 @@ require __DIR__ . '/inc/kopf.php';
                 <span class="wortmarke">Rätsel<span class="akzent">labor</span></span>
               </span>
               <span class="tuer-griff"></span>
+              <?php if (!RAETSELLABOR_OFFEN): ?>
+                <span class="tuer-ueberwurf"></span>
+                <svg class="tuer-schloss" viewBox="0 0 40 50" focusable="false">
+                  <path d="M12 23V15a8 8 0 0 1 16 0v8" fill="none" stroke="#8b9097" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M12 23V15a8 8 0 0 1 16 0v8" fill="none" stroke="#2f2a26" stroke-width="1.4" stroke-linecap="round" opacity=".35"/>
+                  <rect x="3.5" y="21" width="33" height="26" rx="6" fill="#e0a516" stroke="#2f2a26" stroke-width="2.5"/>
+                  <rect x="8" y="24.5" width="5" height="18" rx="2.5" fill="#fff" opacity=".35"/>
+                  <circle cx="20" cy="32" r="3.6" fill="#2f2a26"/>
+                  <path d="M18.4 34h3.2l1 6.5h-5.2z" fill="#2f2a26"/>
+                </svg>
+                <span class="tuer-schild-zu"><?= icon('lock') ?>Noch nicht für die Öffentlichkeit bestimmt</span>
+              <?php endif; ?>
             </span>
             <span class="tuer-hinten"></span>
           </span>
         </span>
         <span class="tuer-licht" aria-hidden="true"></span>
-      </a>
+      <?php if (RAETSELLABOR_OFFEN): ?></a><?php else: ?></div><?php endif; ?>
     </aside>
   </div>
 </section>

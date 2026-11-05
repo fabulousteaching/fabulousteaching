@@ -30,6 +30,15 @@
     pruefen();
   }
 
+  // ---------- Verschlossene Labortür: Antippen lässt sie rütteln und zeigt das Schild ----------
+  Array.prototype.slice.call(document.querySelectorAll('.labortuer.ist-zu')).forEach(function (tuer) {
+    tuer.addEventListener('click', function () {
+      tuer.classList.remove('wackelt');
+      void tuer.offsetWidth; // Animation neu starten
+      tuer.classList.add('wackelt', 'zeigt');
+    });
+  });
+
   // ---------- Filter bei den Unterrichtsmaterialien ----------
   var raster = document.getElementById('raster');
   if (!raster) return;

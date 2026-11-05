@@ -9,6 +9,8 @@ declare(strict_types=1);
 // ---------- Einstellungen ----------
 const SEITENNAME      = 'fabulous teaching';
 const RAETSELLABOR_URL = 'https://raetsellabor.fabulousteaching.ch';
+// Rätsellabor freigeben: auf true stellen, dann geht die Labortür wieder auf.
+const RAETSELLABOR_OFFEN = false;
 const INSTAGRAM_URL   = 'https://www.instagram.com/fabulous_teaching/';
 const VOKABOOM_URL    = 'https://vokaboom.fabulousteaching.ch';
 const BENUTZER_DATEI  = __DIR__ . '/../daten/benutzer.php';

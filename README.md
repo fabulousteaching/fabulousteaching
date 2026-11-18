@@ -11,7 +11,7 @@ Rätsellabor und Login-Bereich. Farben und Stil kommen aus dem Logo
 | `index.php` | Home: Begrüssung, **Über mich** (Foto + Text), Überblick, Materialvorschau |
 | `unterrichtsmaterialien.php` | Materialien mit Fach-Reitern, Zyklus-Filter und Suche |
 | `raetsellabor.php` | Infoseite mit Knopf zu https://raetsellabor.fabulousteaching.ch |
-| `lerntools.php` | Lerntools: Vokaboom und Teilmal |
+| `tools.php` | Lerntools: Vokaboom und Teilmal (`lerntools.php` leitet vorübergehend hierher weiter) |
 | `uebungslabor.php` | Übungslabor: Fach wählen (Mathematik, Englisch, NMG), dann üben |
 | `login.php` | Anmeldung (beim allerersten Aufruf: eigenes Konto einrichten) |
 | `bereich.php` | «Mein Bereich» nach dem Login: geschützte Materialien, Abmelden |

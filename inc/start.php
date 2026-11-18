@@ -14,6 +14,8 @@ const RAETSELLABOR_OFFEN = false;
 const INSTAGRAM_URL   = 'https://www.instagram.com/fabulous_teaching/';
 const VOKABOOM_URL    = 'https://vokaboom.fabulousteaching.ch';
 const TEILMAL_URL     = 'https://teilmal.fabulousteaching.ch';
+// Teilmal freigeben: auf true stellen, dann führen Logo und Knopf in den Lerntools wieder zu Teilmal.
+const TEILMAL_OFFEN   = false;
 const BENUTZER_DATEI  = __DIR__ . '/../daten/benutzer.php';
 const MATERIAL_DATEI  = __DIR__ . '/../daten/materialien.php';
 const GESCHUETZT_ORDNER = __DIR__ . '/../daten/dateien';

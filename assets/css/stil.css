@@ -368,6 +368,38 @@ p{margin:0 0 1em}
 .teilmal-name .mal{background:linear-gradient(100deg,#0F766E,#0E7490);-webkit-background-clip:text;background-clip:text;color:transparent}
 .knopf-teilmal{background:linear-gradient(100deg,#0F766E,#0E7490);color:#fff;border-color:var(--tinte)}
 .knopf-teilmal:hover{color:#fff}
+button.werkzeug-logo{padding:0;cursor:pointer;font:inherit}
+
+/* «Bald da»-Fenster (z. B. Teilmal noch nicht offen) */
+.bald{border:0;padding:0;background:transparent;max-width:none;max-height:none;overflow:visible;color:var(--tinte)}
+.bald::backdrop{background:radial-gradient(circle at 50% 45%,rgba(15,118,110,.55),rgba(16,32,30,.78));backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:bald-dunkel .35s ease both}
+.bald[open] .bald-karte{animation:bald-auf .7s cubic-bezier(.2,1.5,.35,1) both}
+.bald.zu .bald-karte{animation:bald-weg .22s ease-in both}
+.bald.zu::backdrop{animation:bald-dunkel .22s ease-in reverse both}
+@keyframes bald-dunkel{from{opacity:0}}
+@keyframes bald-auf{0%{opacity:0;transform:translateY(60px) scale(.55) rotate(-8deg)}60%{opacity:1}100%{transform:none}}
+@keyframes bald-weg{to{opacity:0;transform:translateY(20px) scale(.85) rotate(3deg)}}
+.bald-karte{position:relative;width:min(440px,calc(100vw - 32px));padding:30px 26px 26px;text-align:center;border-radius:30px;overflow:hidden;overflow:clip;
+  background:linear-gradient(160deg,#ffffff 0%,#E1F5F1 55%,#FFE9E2 100%);border:3px solid var(--tinte);box-shadow:8px 8px 0 #0F766E,0 30px 60px -20px rgba(0,0,0,.5)}
+.bald-karte::after{content:"";position:absolute;inset:-40% auto -40% -60%;width:40%;transform:rotate(18deg);pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);animation:bald-glanz 2.8s ease-in-out .5s infinite}
+@keyframes bald-glanz{0%{left:-60%}45%,100%{left:130%}}
+.bald-zu{position:absolute;right:12px;top:12px;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;border:2px solid var(--tinte);background:#fff;cursor:pointer;z-index:2}
+.bald-zu .icon{width:20px;height:20px}
+.bald-buehne{position:relative;width:132px;height:132px;margin:0 auto 6px}
+.bald-logo{width:100%;height:100%;filter:drop-shadow(0 10px 12px rgba(15,118,110,.35));animation:bald-wackeln 2.4s ease-in-out .7s infinite}
+@keyframes bald-wackeln{0%,100%{transform:rotate(0) translateY(0)}20%{transform:rotate(-7deg) translateY(-6px)}40%{transform:rotate(5deg) translateY(0)}60%{transform:rotate(-3deg) translateY(-3px)}80%{transform:rotate(2deg)}}
+.bald-sanduhr{position:absolute;right:-14px;bottom:-4px;width:52px;height:52px;display:grid;place-items:center;font-size:30px;border-radius:50%;background:#FFC233;border:3px solid var(--tinte);box-shadow:0 4px 0 var(--tinte);animation:bald-drehen 2.2s cubic-bezier(.6,0,.3,1) .9s infinite}
+@keyframes bald-drehen{0%,35%{transform:rotate(0)}55%,100%{transform:rotate(180deg)}}
+.bald-marke{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 6px;font-family:"Bricolage Grotesque",var(--schrift-titel);font-weight:800;font-size:2rem;letter-spacing:-.03em;line-height:1}
+.bald-marke .teil{color:#FF6B4A}
+.bald-marke .mal{background:linear-gradient(100deg,#0F766E,#0E7490);-webkit-background-clip:text;background-clip:text;color:transparent;margin-left:-10px}
+.bald-badge{font-family:var(--schrift-titel);font-weight:600;font-size:.85rem;letter-spacing:.02em;color:var(--tinte);background:#FFC233;border:2px solid var(--tinte);border-radius:999px;padding:.25em .7em;transform:rotate(-6deg);animation:bald-puls 1.4s ease-in-out infinite}
+@keyframes bald-puls{50%{transform:rotate(-6deg) scale(1.1)}}
+.bald h2{font-size:clamp(1.35rem,4.6vw,1.7rem);line-height:1.25;margin:10px 0 22px}
+.bald-toller{background:linear-gradient(100deg,#0F766E,#0E7490 45%,#FF6B4A);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.bald-ok{width:100%}
+.bald-konfetti{position:fixed;left:0;top:0;z-index:2147483647;pointer-events:none;font-family:"Bricolage Grotesque",var(--schrift-titel);font-weight:800;line-height:1;will-change:transform,opacity}
 .knopf-vokaboom:hover{color:#fff}
 @media (max-width:720px){
   .werkzeug{grid-template-columns:1fr}

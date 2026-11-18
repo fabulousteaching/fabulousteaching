@@ -47,9 +47,15 @@ require __DIR__ . '/inc/kopf.php';
 
     <!-- Teilmal (1x1, früher «Einmaleins») -->
     <article class="werkzeug" style="--w:#0F766E" aria-labelledby="teilmal-titel">
-      <a class="werkzeug-logo" href="<?= e(TEILMAL_URL) ?>" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-        <img src="assets/bilder/teilmal-logo.svg" width="160" height="160" alt="">
-      </a>
+      <?php if (TEILMAL_OFFEN): ?>
+        <a class="werkzeug-logo" href="<?= e(TEILMAL_URL) ?>" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+          <img src="assets/bilder/teilmal-logo.svg" width="160" height="160" alt="">
+        </a>
+      <?php else: ?>
+        <button type="button" class="werkzeug-logo" data-bald="teilmal-bald" tabindex="-1" aria-hidden="true">
+          <img src="assets/bilder/teilmal-logo.svg" width="160" height="160" alt="">
+        </button>
+      <?php endif; ?>
       <div class="werkzeug-text">
         <h2 id="teilmal-titel" class="teilmal-name"><span class="teil">Teil</span><span class="mal">mal</span></h2>
         <p class="werkzeug-unterzeile">Mal &amp; Geteilt üben</p>
@@ -62,9 +68,29 @@ require __DIR__ . '/inc/kopf.php';
           <li><?= icon('users') ?> Klassen &amp; Kinder-Logins</li>
           <li><?= icon('file-text') ?> Übungsblätter als PDF</li>
         </ul>
-        <a class="knopf knopf-teilmal" href="<?= e(TEILMAL_URL) ?>" target="_blank" rel="noopener">Teilmal öffnen <?= icon('external-link') ?></a>
+        <?php if (TEILMAL_OFFEN): ?>
+          <a class="knopf knopf-teilmal" href="<?= e(TEILMAL_URL) ?>" target="_blank" rel="noopener">Teilmal öffnen <?= icon('external-link') ?></a>
+        <?php else: ?>
+          <button type="button" class="knopf knopf-teilmal" data-bald="teilmal-bald" aria-haspopup="dialog"><?= icon('lock') ?> Teilmal öffnen</button>
+        <?php endif; ?>
       </div>
     </article>
+
+    <?php if (!TEILMAL_OFFEN): ?>
+    <!-- Teilmal ist noch nicht offen: Fenster «Bald da» (Schalter TEILMAL_OFFEN in inc/start.php) -->
+    <dialog class="bald" id="teilmal-bald" aria-labelledby="teilmal-bald-titel">
+      <div class="bald-karte">
+        <button type="button" class="bald-zu" data-schliessen aria-label="Schliessen"><?= icon('x') ?></button>
+        <div class="bald-buehne" aria-hidden="true">
+          <img class="bald-logo" src="assets/bilder/teilmal-logo.svg" width="120" height="120" alt="">
+          <span class="bald-sanduhr">⏳</span>
+        </div>
+        <p class="bald-marke"><span class="teil">Teil</span><span class="mal">mal</span><span class="bald-badge">Bald da!</span></p>
+        <h2 id="teilmal-bald-titel">Gedulde dich noch ein bisschen, es wird dafür <span class="bald-toller">umso toller!</span></h2>
+        <button type="button" class="knopf knopf-teilmal bald-ok" data-schliessen>Okay, ich freu mich!</button>
+      </div>
+    </dialog>
+    <?php endif; ?>
 
   </div>
 </section>

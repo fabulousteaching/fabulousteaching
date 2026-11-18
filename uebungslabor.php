@@ -8,13 +8,20 @@ $beschreibung = 'Im Übungslabor ein Fach wählen und üben: Mathematik, Englisc
 /*
  * Fächer im Übungslabor.
  * Übungen später unter 'uebungen' eintragen, zum Beispiel:
- *   ['titel' => 'Reihen-Treppe', 'beschreibung' => 'Eine Reihe hinauf und hinunter.', 'link' => 'https://…'],
+ *   ['titel' => 'Reihen-Treppe', 'beschreibung' => 'Eine Reihe hinauf und hinunter.', 'link' => 'https://…', 'quelle' => 'Teilmal'],
  */
 $uebungsfaecher = [
     'mathematik' => [
         'name' => 'Mathematik', 'icon' => 'calculator', 'farbe' => '#3d8fd6',
         'text' => 'Zahlen, Rechnen und Knobeln',
-        'uebungen' => [],
+        'uebungen' => [
+            [
+                'titel'        => 'Bogenschiessen',
+                'beschreibung' => 'Einmaleins-Spiel: Bogen spannen, zielen und das Feld mit dem richtigen Ergebnis treffen.',
+                'link'         => TEILMAL_URL . '/#spiel=zielscheibe',
+                'quelle'       => 'Teilmal',
+            ],
+        ],
     ],
     'englisch' => [
         'name' => 'Englisch', 'icon' => 'languages', 'farbe' => '#8a63d2',
@@ -64,6 +71,7 @@ require __DIR__ . '/inc/kopf.php';
           <ul class="ul-uebungen">
             <?php foreach ($f['uebungen'] as $u): ?>
               <li class="ul-uebung">
+                <?php if (!empty($u['quelle'])): ?><span class="ul-quelle"><?= e($u['quelle']) ?></span><?php endif; ?>
                 <h3><?= e($u['titel']) ?></h3>
                 <?php if (!empty($u['beschreibung'])): ?><p><?= e($u['beschreibung']) ?></p><?php endif; ?>
                 <a class="knopf knopf-klein" href="<?= e($u['link']) ?>" target="_blank" rel="noopener">Üben <?= icon('arrow-right') ?></a>

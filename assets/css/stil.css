@@ -400,6 +400,7 @@ p{margin:0 0 1em}
 .ul-uebungen{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
 .ul-uebung{display:flex;flex-direction:column;gap:8px;padding:18px;border:2px solid var(--linie);border-radius:18px;background:color-mix(in srgb,var(--f) 5%,#fff)}
 .ul-uebung h3{margin:0}
+.ul-quelle{align-self:flex-start;font-weight:800;font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:var(--tinte-weich)}
 .ul-uebung p{margin:0;color:var(--tinte-weich);flex:1}
 .ul-uebung .knopf{align-self:flex-start}
 @media (max-width:700px){

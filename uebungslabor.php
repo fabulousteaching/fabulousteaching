@@ -3,7 +3,7 @@ require __DIR__ . '/inc/start.php';
 
 $seite        = 'uebungslabor';
 $titel        = 'Übungslabor';
-$beschreibung = 'Das Übungslabor: Vokaboom für Englisch-Vokabeln und Einmaleins zum Üben des kleinen und grossen Einmaleins.';
+$beschreibung = 'Das Übungslabor: Vokaboom, die Vokabelplattform für Fremdsprachen, und Einmaleins zum Üben des kleinen und grossen Einmaleins.';
 
 require __DIR__ . '/inc/kopf.php';
 ?>
@@ -30,8 +30,8 @@ require __DIR__ . '/inc/kopf.php';
       </a>
       <div class="werkzeug-text">
         <h2 id="vokaboom-titel" class="vokaboom-name">Voka<span>boom</span></h2>
-        <p class="werkzeug-unterzeile">Das Vokabelspiel für Englisch</p>
-        <p>Vokabeln einfügen – und Vokaboom macht daraus Lernkarten mit Bildern, Spiele und Übungen. Mit einem QR-Code hat die ganze Klasse die Wörter sofort auf dem Tablet.</p>
+        <p class="werkzeug-unterzeile">Die Vokabelplattform für Fremdsprachen</p>
+        <p>Vokabeln einfügen – und Vokaboom macht daraus Lernkarten mit Bildern, diverse Spiele und Übungen. Über einen QR-Code lassen sie sich mit der ganzen Klasse teilen. Als Lehrperson kann man Klassen anlegen, Aufgaben zuweisen und Statistiken einsehen. Auch Live-Spiele mit der Klasse sind möglich.</p>
         <ul class="werkzeug-merkmale">
           <li><?= icon('layers') ?> Lernkarten mit Bild</li>
           <li><?= icon('puzzle') ?> Zuordnen &amp; Memory</li>

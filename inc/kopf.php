@@ -15,7 +15,7 @@ $menue = [
     'home'         => ['Home', 'index.php'],
     'materialien'  => ['Unterrichtsmaterialien', 'unterrichtsmaterialien.php'],
     'raetsellabor' => ['Rätsellabor', 'raetsellabor.php'],
-    'lerntools'    => ['Lerntools', 'lerntools.php'],
+    'uebungslabor' => ['Übungslabor', 'uebungslabor.php'],
 ];
 ?>
 <!DOCTYPE html>

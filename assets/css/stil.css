@@ -363,6 +363,13 @@ p{margin:0 0 1em}
   border:1.5px solid color-mix(in srgb,var(--w) 25%,#fff);border-radius:999px;padding:.35em .85em}
 .werkzeug-merkmale .icon{width:1.1em;height:1.1em;color:var(--w)}
 .knopf-vokaboom{background:linear-gradient(100deg,#4F46E5,#7C3AED);color:#fff;border-color:var(--tinte)}
+.einmaleins-name{font-family:"Bricolage Grotesque",var(--schrift-titel);font-weight:800;font-size:clamp(2.2rem,4.5vw,3rem);letter-spacing:-.03em;color:#10201E;line-height:1}
+.einmaleins-name span{background:linear-gradient(100deg,#0F766E,#0E7490 50%,#FF6B4A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.knopf-einmaleins{background:linear-gradient(100deg,#0F766E,#0E7490);color:#fff;border-color:var(--tinte)}
+.knopf-einmaleins:hover{color:#fff}
+.werkzeug-merkmale .emo{font-size:1.05em;line-height:1}
+.werkzeug-merkmale .ist-neu{border-color:var(--w);background:color-mix(in srgb,var(--w) 14%,#fff)}
+.neu-marke{font-family:var(--schrift-titel);font-weight:600;font-size:.72rem;letter-spacing:.03em;background:#FFC233;color:var(--tinte);border:1.5px solid var(--tinte);border-radius:999px;padding:.1em .5em}
 .knopf-vokaboom:hover{color:#fff}
 @media (max-width:720px){
   .werkzeug{grid-template-columns:1fr}

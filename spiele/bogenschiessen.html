@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bogenschiessen · Einmaleins</title>
+<meta name="description" content="Bogenschiessen: Einmaleins üben – Bogen spannen, zielen und das Feld mit dem richtigen Ergebnis treffen.">
+<meta name="theme-color" content="#7CC4EC">
+<link rel="icon" type="image/png" href="../favicon.png">
+<style>
+/* Bogenschiessen – eigenständige Seite. Spielszene, Zielen und Schiessen stammen aus dem Spiel
+   «Zielscheibe» von Teilmal (teilmal.fabulousteaching.ch). Schriften liegen auf fabulousteaching.ch. */
+@font-face{font-family:"Bricolage Grotesque";font-weight:800;font-display:swap;src:url("../assets/fonts/bricolage-grotesque-latin-800-normal.woff2") format("woff2")}
+@font-face{font-family:"Nunito";font-weight:400;font-display:swap;src:url("../assets/fonts/nunito-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Nunito";font-weight:700;font-display:swap;src:url("../assets/fonts/nunito-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Nunito";font-weight:800;font-display:swap;src:url("../assets/fonts/nunito-latin-800-normal.woff2") format("woff2")}
+:root{--font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--font-body:"Nunito","Segoe UI",system-ui,sans-serif;--holz:#5B3A22;--holz-hell:#A86F3A;--creme:#F7EAC9}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#6FAF4F;color:#3B2415;font-family:var(--font-body);overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid #1d6fd1;outline-offset:2px}
+
+/* ---------- Szene ---------- */
+.tg-stage{position:relative;container-type:size;overflow:hidden;width:100vw;height:100vh;height:100dvh;user-select:none;-webkit-user-select:none;touch-action:none;cursor:crosshair;background:#6FAF4F}
+.tg-sky{position:absolute;inset:0 0 30% 0;background:linear-gradient(#7CC4EC,#CFEFFC 85%)}
+.tg-sun{position:absolute;right:9%;top:8%;width:11cqmin;height:11cqmin;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF6D8,#FFD873 70%);box-shadow:0 0 8cqmin 1cqmin rgba(255,216,115,.45)}
+.tg-cloud{position:absolute;height:auto;opacity:.9;animation:tg-drift var(--d,90s) linear infinite alternate}
+@keyframes tg-drift{to{transform:translateX(18cqw)}}
+.tg-hills{position:absolute;left:0;width:100%;top:58%;height:13%}
+.tg-meadow{position:absolute;left:0;right:0;top:70%;bottom:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,.06) 0 6cqh,transparent 6cqh 12cqh),linear-gradient(#6FAF4F,#3E7A2E)}
+.tg-fence{position:absolute;left:0;right:0;top:-3.4cqh;height:4.6cqh;background:linear-gradient(transparent 22%,#A8773F 22% 36%,transparent 36% 62%,#A8773F 62% 76%,transparent 76%),repeating-linear-gradient(90deg,#8B5A2B 0 1.1cqw,transparent 1.1cqw 9cqw);opacity:.85}
+.tg-sign{position:absolute;left:50%;top:3cqh;z-index:5;transform:translateX(-50%);padding:1.2cqh 4.5cqmin;border-radius:16px;background:linear-gradient(#F7EAC9,#EBD6A6);border:4px solid var(--holz);box-shadow:0 6px 0 rgba(0,0,0,.22);white-space:nowrap}
+.tg-sign::before,.tg-sign::after{content:"";position:absolute;top:-3cqh;width:5px;height:3cqh;background:var(--holz)}
+.tg-sign::before{left:22%}.tg-sign::after{right:22%}
+.tg-sign.drop{animation:tg-sign .5s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes tg-sign{from{transform:translate(-50%,-30%) rotate(-4deg);opacity:0}}
+.tg-sign .task{display:inline-flex;gap:.2em;align-items:center;font-family:var(--font-display);font-weight:800;font-size:clamp(1.6rem,8cqmin,3.4rem);color:#3B2415;line-height:1.05}
+.tg-sign .task .op{color:#8B5A2B}
+.tg-sign .task .slot{display:inline-grid;place-items:center;min-width:1.2em;height:1em;border:3px dashed var(--holz-hell);background:rgba(255,255,255,.5);color:#C77700;border-radius:10px}
+.tg-clock{position:absolute;left:50%;top:calc(3cqh + 12cqmin);z-index:5;width:min(40cqw,320px);height:9px;transform:translateX(-50%);border-radius:99px;background:rgba(59,36,21,.3);overflow:hidden}
+.tg-clock i{display:block;height:100%;background:linear-gradient(90deg,#F2C14E,#E8553A);transform-origin:left}
+.tg-clock[hidden]{display:none}
+.tg-target{position:absolute;left:50%;top:46%;z-index:3;width:min(56cqh,74cqw);aspect-ratio:1;transform:translate(-50%,-50%);filter:drop-shadow(0 1.6cqh 1.2cqh rgba(0,0,0,.3))}
+.tg-target svg{display:block;width:100%;height:100%;overflow:visible}
+.tg-stand{position:absolute;left:50%;top:calc(46% + min(56cqh,74cqw) * .4);z-index:2;width:min(24cqh,32cqw);transform:translateX(-50%)}
+.tg-stand svg{display:block;width:100%}
+.tg-q .fill{transition:fill .2s}
+.tg-q.q-tl .fill,.tg-q.q-br .fill{fill:#F2C14E}
+.tg-q.q-tr .fill,.tg-q.q-bl .fill{fill:#E98B3A}
+.tg-q .badge{fill:rgba(255,249,235,.93);stroke:rgba(91,58,34,.35);stroke-width:1.5}
+.tg-num{font-family:var(--font-display);font-weight:800;font-size:27px;fill:#3B2415;dominant-baseline:central}
+.tg-q.correct .fill{fill:#3FA34D!important}
+.tg-q.wrong .fill{fill:#D9453B!important}
+.tg-q.correct,.tg-q.wrong{transform-box:fill-box;transform-origin:center;animation:tg-q-pop .45s ease}
+@keyframes tg-q-pop{40%{transform:scale(1.06)}}
+.tg-arrows{position:absolute;inset:0;z-index:4;pointer-events:none}
+.tg-stuck{position:absolute;width:8cqmin;height:8cqmin;transform:translate(-10%,-10%);transform-origin:10% 10%;animation:tg-wobble .5s ease-out;transition:opacity .35s}
+.tg-stuck svg{display:block;width:100%;height:100%}
+.tg-stuck.miss{opacity:.75}
+.tg-stuck.gone{opacity:0}
+@keyframes tg-wobble{0%{transform:translate(-10%,-10%) rotate(8deg)}25%{transform:translate(-10%,-10%) rotate(-6deg)}50%{transform:translate(-10%,-10%) rotate(4deg)}75%{transform:translate(-10%,-10%) rotate(-2deg)}}
+.tg-reticle{position:absolute;z-index:7;width:9cqmin;height:9cqmin;transform:translate(-50%,-50%);opacity:0;pointer-events:none;transition:opacity .12s}
+.tg-reticle.on{opacity:1}
+.tg-reticle svg{display:block;width:100%;height:100%}
+.tg-bow{position:absolute;left:50%;bottom:-16cqh;z-index:6;width:min(58cqh,92cqw);height:40cqh;transform:translateX(-50%);transition:transform .1s ease-out;pointer-events:none}
+.tg-bow svg{width:100%;height:100%;overflow:visible;transform-origin:50% 80%}
+.tg-bow.drawn svg{animation:tg-tense .14s ease-in-out infinite alternate}
+.tg-bow.kick svg{animation:tg-kick .28s ease-out}
+@keyframes tg-tense{from{transform:translate(-.6px,0)}to{transform:translate(.6px,-.4px)}}
+@keyframes tg-kick{0%{transform:translateY(14px) scale(1.02)}60%{transform:translateY(-3px)}100%{transform:none}}
+.tg-flight{position:absolute;left:0;top:0;z-index:8;width:3cqmin;height:20cqmin;transform-origin:50% 0;opacity:0;pointer-events:none}
+.tg-flight svg{display:block;width:100%;height:100%}
+.tg-toast{position:absolute;left:50%;top:calc(3cqh + 14cqmin);z-index:9;transform:translate(-50%,6px);padding:.45rem 1.1rem;border-radius:14px;background:var(--holz);color:#F3E4C2;font-family:var(--font-display);font-weight:800;font-size:clamp(1rem,3.4cqmin,1.4rem);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.tg-toast.show{opacity:1;transform:translate(-50%,0)}
+.tg-toast.good{background:#3FA34D;color:#fff}
+.tg-toast.bad{background:#D9453B;color:#fff}
+.tg-help{position:absolute;left:50%;bottom:3cqh;z-index:7;transform:translateX(-50%);margin:0;padding:.35rem .9rem;border-radius:99px;background:rgba(36,22,10,.55);color:#fff;font-weight:700;font-size:.9rem;white-space:nowrap;pointer-events:none;transition:opacity .4s}
+.tg-help.hide{opacity:0}
+
+/* ---------- Anzeige (Zeit, Leben, Treffer) ---------- */
+.tg-hud{position:absolute;left:12px;top:12px;z-index:6}
+.hud{display:flex;align-items:center;gap:.8rem;padding:.4rem .8rem;border-radius:14px;background:linear-gradient(#A86F3A,#8B5A2B);border:3px solid var(--holz);box-shadow:0 4px 0 rgba(0,0,0,.25);color:#F3E4C2;font-weight:800}
+.hud b{font-family:var(--font-display);font-size:1.25rem;color:#FFF6E2}
+.hud small{font-weight:700;opacity:.85}
+.hud span{display:inline-flex;align-items:center;gap:.3rem}
+.hud svg{width:1.1em;height:1.1em}
+.hud .balken{width:70px;height:8px;border-radius:99px;background:rgba(0,0,0,.25);overflow:hidden}
+.hud .balken i{display:block;height:100%;background:#FFD873;transform-origin:left}
+.hud .balken.knapp i{background:#FF8A6B}
+.hud .ok{color:#D9F7C9}
+.hud .ok.pop{animation:hud-pop .35s ease}
+@keyframes hud-pop{50%{transform:scale(1.25)}}
+.hud .level{background:rgba(255,255,255,.18);color:#FFE2A0;border-radius:8px;padding:.05rem .45rem}
+.hud .herz{fill:#FF6B6B;transition:opacity .25s,transform .25s}
+.hud .herz.weg{opacity:.25;transform:scale(.8)}
+
+/* ---------- Knöpfe oben rechts ---------- */
+.ecke{position:absolute;right:12px;top:12px;z-index:10;display:flex;gap:8px}
+.ecke button{width:44px;height:44px;border-radius:12px;border:3px solid var(--holz);background:linear-gradient(#A86F3A,#8B5A2B);color:#FFF6E2;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.ecke svg{width:22px;height:22px}
+
+/* ---------- Start- und Ergebniskarte ---------- */
+.overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:rgba(36,22,10,.38);cursor:default;overflow:auto}
+.overlay[hidden]{display:none}
+.karte{width:min(560px,100%);max-height:100%;overflow:auto;background:linear-gradient(#FBF2DC,#F2E1B8);border:4px solid var(--holz);border-radius:24px;box-shadow:0 8px 0 rgba(0,0,0,.25);padding:22px 22px 24px;text-align:center}
+.karte h1,.karte h2{font-family:var(--font-display);font-weight:800;margin:0;letter-spacing:-.02em;color:#3B2415}
+.karte h1{font-size:clamp(2rem,6vw,2.6rem);line-height:1}
+.karte h2{font-size:1.6rem}
+.karte .unter{margin:.5rem 0 1.1rem;font-weight:700;color:#6b4a2c}
+.gruppe{margin:0 0 14px;text-align:left}
+.gruppe-titel{display:block;font-weight:800;font-size:.95rem;margin:0 0 6px;color:#5B3A22}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:2.5px solid #C9A46B;background:#FFF8E8;border-radius:12px;padding:.4rem .7rem;font-weight:800;min-width:44px;transition:background-color .15s,border-color .15s}
+.chip[aria-pressed="true"]{background:#F2C14E;border-color:var(--holz);box-shadow:0 2px 0 var(--holz)}
+.chip.alle{font-weight:700}
+.modi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.modus{border:2.5px solid #C9A46B;background:#FFF8E8;border-radius:14px;padding:.55rem .4rem;display:grid;gap:2px;justify-items:center}
+.modus b{font-family:var(--font-display);font-size:1.05rem}
+.modus small{font-size:.8rem;color:#6b4a2c;font-weight:700}
+.modus svg{width:22px;height:22px;color:#8B5A2B}
+.modus .herz{fill:#E8553A}
+.modus[aria-pressed="true"]{background:#F2C14E;border-color:var(--holz);box-shadow:0 2px 0 var(--holz)}
+.los{margin-top:8px;width:100%;border:3px solid var(--holz);border-radius:16px;padding:.8rem 1rem;background:linear-gradient(#5CBF5F,#3FA34D);color:#fff;font-family:var(--font-display);font-weight:800;font-size:1.35rem;box-shadow:0 5px 0 #2C6E34}
+.los:active{transform:translateY(3px);box-shadow:0 2px 0 #2C6E34}
+.los[disabled]{filter:grayscale(1);opacity:.6;cursor:not-allowed}
+.zweit{margin-top:10px;border:3px solid var(--holz);border-radius:14px;padding:.6rem 1rem;background:#FFF8E8;font-weight:800;width:100%}
+.hinweis{font-size:.85rem;color:#7a5634;margin:10px 0 0}
+.ergebnis-zahl{font-family:var(--font-display);font-weight:800;font-size:3.4rem;line-height:1;margin:.6rem 0 .1rem;color:#3FA34D}
+.ergebnis-text{font-weight:800;margin:0 0 .4rem}
+.rekord{display:inline-block;margin:.2rem 0 .6rem;padding:.2rem .7rem;border-radius:99px;background:#F2C14E;border:2px solid var(--holz);font-weight:800}
+.rekord.alt{background:transparent;border-color:transparent;font-weight:700;color:#6b4a2c}
+.nochmal{margin:.6rem 0 .4rem;text-align:left}
+.nochmal p{margin:0 0 6px;font-weight:800}
+.nochmal ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.nochmal li{background:#FFF8E8;border:2px solid #C9A46B;border-radius:10px;padding:.2rem .55rem;font-family:var(--font-display);font-weight:800}
+
+@media (max-width:560px){
+  .tg-hud{left:8px;top:auto;bottom:8px;z-index:9}
+  .hud{gap:.5rem;padding:.3rem .55rem}
+  .hud .balken{display:none}
+  .tg-sign{top:2cqh}
+  .tg-help{display:none}
+  .ecke{top:auto;bottom:8px;right:8px}
+  .modi{grid-template-columns:1fr}
+  .modus{grid-template-columns:auto 1fr;justify-items:start;text-align:left;column-gap:10px}
+  .modus svg{grid-row:1/3}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<main class="tg-stage" id="tgstage" aria-label="Bogenschiessen">
+  <div class="tg-sky" aria-hidden="true"><span class="tg-sun"></span></div>
+  <svg class="tg-hills" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40C40 18 80 22 120 32s70 2 110-10 90-4 120 14 40 6 50 0V60H0z" fill="#8CC56B"/><path d="M0 50c50-14 100-8 150 0s110 6 170-6 70 2 80 4V60H0z" fill="#6FAF4F"/></svg>
+  <div class="tg-meadow" aria-hidden="true"><span class="tg-fence"></span></div>
+  <div class="tg-hud" id="tghud" aria-live="polite"></div>
+  <div class="tg-sign" id="tgsign"><span class="task" id="tgtask" aria-live="polite"><span class="num">7</span><span class="op">·</span><span class="num">8</span><span class="op">=</span><span class="slot">?</span></span></div>
+  <div class="tg-clock" id="tgclock" hidden><i></i></div>
+  <div class="tg-stand" id="tgstand" aria-hidden="true"></div>
+  <div class="tg-target" id="tgtarget"></div>
+  <div class="tg-arrows" id="tgarrows" aria-hidden="true"></div>
+  <div class="tg-reticle" id="tgret" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="none" stroke="#fff" stroke-width="5" opacity=".9"/><circle cx="50" cy="50" r="34" fill="none" stroke="#E8553A" stroke-width="2.4"/><path d="M50 4v20M50 76v20M4 50h20M76 50h20" stroke="#fff" stroke-width="4"/><circle cx="50" cy="50" r="3" fill="#E8553A"/></svg></div>
+  <div class="tg-bow" id="tgbow" aria-hidden="true"></div>
+  <div class="tg-flight" id="tgflight" aria-hidden="true"></div>
+  <div class="tg-toast" id="tgtoast" role="status"></div>
+  <p class="tg-help hide" id="tghelp">Finger aufs Bild = spannen · ziehen = zielen · loslassen = schiessen</p>
+
+  <div class="ecke">
+    <button type="button" id="tonKnopf" aria-label="Ton aus" title="Ton an/aus"></button>
+    <button type="button" id="menueKnopf" aria-label="Neues Spiel / Einstellungen" title="Einstellungen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+
+  <!-- Startkarte -->
+  <section class="overlay" id="startKarte" role="dialog" aria-modal="true" aria-labelledby="startTitel">
+    <div class="karte">
+      <h1 id="startTitel">Bogenschiessen</h1>
+      <p class="unter">Spann den Bogen und triff das Feld mit dem richtigen Ergebnis!</p>
+      <div class="gruppe">
+        <span class="gruppe-titel">Reihen</span>
+        <div class="chips" id="reihenWahl" role="group" aria-label="Reihen"></div>
+      </div>
+      <div class="gruppe">
+        <span class="gruppe-titel">Aufgaben</span>
+        <div class="chips" id="artWahl" role="group" aria-label="Aufgaben"></div>
+      </div>
+      <div class="gruppe">
+        <span class="gruppe-titel">Spielmodus</span>
+        <div class="modi" id="modusWahl" role="group" aria-label="Spielmodus"></div>
+      </div>
+      <button type="button" class="los" id="losKnopf">Los geht's!</button>
+      <p class="hinweis">Finger aufs Bild legen = Bogen spannen · ziehen = zielen · loslassen = schiessen. Am Computer gehen auch die Tasten 1–4.</p>
+    </div>
+  </section>
+
+  <!-- Ergebniskarte -->
+  <section class="overlay" id="endeKarte" role="dialog" aria-modal="true" aria-labelledby="endeTitel" hidden>
+    <div class="karte">
+      <h2 id="endeTitel">Geschafft!</h2>
+      <div id="endeInhalt"></div>
+      <button type="button" class="los" id="nochmalKnopf">Nochmals</button>
+      <button type="button" class="zweit" id="einstellKnopf">Andere Reihen oder Modus</button>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------- Hilfen ---------------- */
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.prototype.slice.call(document.querySelectorAll(s));
+  const rand = (n) => Math.floor(Math.random() * n);
+  const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+  const pick = (a) => a[rand(a.length)];
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function shuffle(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rand(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  const speicher = {
+    lesen(k, std) { try { const v = localStorage.getItem('bogenschiessen.' + k); return v == null ? std : JSON.parse(v); } catch (e) { return std; } },
+    schreiben(k, v) { try { localStorage.setItem('bogenschiessen.' + k, JSON.stringify(v)); } catch (e) { /* ohne Speicher */ } },
+  };
+  const SIGN = '·';
+  const timers = new Set();
+  function gLater(fn, ms) { const id = setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); return id; }
+  function alleTimerStopp() { timers.forEach(clearTimeout); timers.clear(); }
+
+  /* ---------------- Töne ---------------- */
+  let tonAn = speicher.lesen('ton', true);
+  let audioCtx = null;
+  function tone(freqs, dur, type, gain) {
+    if (!tonAn) return;
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const t0 = audioCtx.currentTime + 0.01;
+      freqs.forEach((f, i) => {
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.type = type; o.frequency.value = f;
+        const st = t0 + i * dur * 0.85;
+        g.gain.setValueAtTime(0.0001, st);
+        g.gain.exponentialRampToValueAtTime(gain, st + 0.015);
+        g.gain.exponentialRampToValueAtTime(0.0001, st + dur);
+        o.connect(g).connect(audioCtx.destination);
+        o.start(st); o.stop(st + dur + 0.03);
+      });
+    } catch (e) { /* kein Ton */ }
+  }
+  const sfx = {
+    good: () => tone([660, 990], 0.13, 'triangle', 0.14),
+    bad: () => tone([196, 165], 0.16, 'square', 0.045),
+    level: () => tone([660, 880, 1175], 0.07, 'triangle', 0.07),
+    win: () => tone([523, 659, 784, 1047], 0.15, 'triangle', 0.14),
+  };
+  const TON_AN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  const TON_AUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>';
+  function tonKnopf() { const b = $('#tonKnopf'); b.innerHTML = tonAn ? TON_AN : TON_AUS; b.setAttribute('aria-label', tonAn ? 'Ton aus' : 'Ton an'); }
+
+  /* ---------------- Aufgaben ---------------- */
+  // a · b = p (b ist die Reihe). op: mul (a · b = ?), div (p : b = ?), gapA (? · b = p), gapB (a · ? = p)
+  function makeTask(a, b, op) {
+    const p = a * b;
+    const answer = op === 'mul' ? p : op === 'div' ? a : op === 'gapA' ? a : b;
+    return { a, b, p, op, key: `${op}:${a}x${b}`, fact: `${Math.min(a, b)}x${Math.max(a, b)}`, answer };
+  }
+  function taskHTML(t) {
+    const s = `<span class="op">${SIGN}</span>`, eq = '<span class="op">=</span>', d = '<span class="op">:</span>';
+    const n = (x) => `<span class="num">${x}</span>`, slot = '<span class="slot">?</span>';
+    if (t.op === 'div') return `${n(t.p)}${d}${n(t.b)}${eq}${slot}`;
+    if (t.op === 'gapA') return `${slot}${s}${n(t.b)}${eq}${n(t.p)}`;
+    if (t.op === 'gapB') return `${n(t.a)}${s}${slot}${eq}${n(t.p)}`;
+    return `${n(t.a)}${s}${n(t.b)}${eq}${slot}`;
+  }
+  function taskText(t, mitLoesung) {
+    const x = mitLoesung ? t.answer : '?';
+    if (t.op === 'div') return `${t.p} : ${t.b} = ${x}`;
+    if (t.op === 'gapA') return `${x} ${SIGN} ${t.b} = ${t.p}`;
+    if (t.op === 'gapB') return `${t.a} ${SIGN} ${x} = ${t.p}`;
+    return `${t.a} ${SIGN} ${t.b} = ${x}`;
+  }
+  /** Alle Aufgaben zu den gewählten Reihen und Aufgabenarten (Tauschaufgaben inbegriffen) */
+  function buildPool(reihen, art) {
+    const ops = art === 'mix' ? ['mul', 'div', 'gap'] : [art];
+    const out = [], seen = new Set();
+    const add = (a, b, op) => { const t = makeTask(a, b, op); if (!seen.has(t.key)) { seen.add(t.key); out.push(t); } };
+    reihen.forEach((r) => {
+      for (let a = 1; a <= 10; a++) {
+        if (ops.includes('mul')) { add(a, r, 'mul'); add(r, a, 'mul'); }
+        if (ops.includes('div')) { add(a, r, 'div'); add(r, a, 'div'); }
+        if (ops.includes('gap')) { add(a, r, 'gapA'); add(a, r, 'gapB'); }
+      }
+    });
+    return out;
+  }
+  /** Nächste Aufgabe: zufällig, ohne kurz hintereinander dieselbe Rechnung; Fehler kommen 3–5 Aufgaben später wieder */
+  function createPicker(pool) {
+    const facts = new Set(pool.map((t) => t.fact)).size;
+    const recent = [];
+    let wieder = [];
+    return {
+      next() {
+        wieder.forEach((w) => { w.in--; });
+        const faellig = wieder.find((w) => w.in <= 0 && !recent.includes(w.t.fact));
+        let t;
+        if (faellig) { wieder = wieder.filter((w) => w !== faellig); t = faellig.t; }
+        else {
+          const cand = pool.filter((x) => !recent.includes(x.fact));
+          t = pick(cand.length ? cand : pool);
+        }
+        recent.push(t.fact);
+        while (recent.length > Math.min(6, Math.max(0, facts - 1))) recent.shift();
+        return Object.assign({}, t, { shownAt: performance.now() });
+      },
+      falsch(t) { if (!wieder.some((w) => w.t.key === t.key)) wieder.push({ t, in: 3 + rand(3) }); },
+    };
+  }
+  /** Gute falsche Antworten: Nachbaraufgaben, ±1, vertauschte Ziffern */
+  function swapDigits(n) { const s = String(n); return s.length === 2 && s[0] !== s[1] && s[1] !== '0' ? +(s[1] + s[0]) : null; }
+  function distractors(t, count) {
+    const ans = t.answer;
+    let near, far;
+    if (t.op === 'mul') {
+      near = [(t.a + 1) * t.b, (t.a - 1) * t.b, t.a * (t.b + 1), t.a * (t.b - 1), ans + 1, ans - 1, swapDigits(ans), ans + 10, ans - 10];
+      far = [(t.a + 2) * t.b, t.a * (t.b + 2), (t.a - 2) * t.b, ans + 2, ans - 2, (t.a + 1) * (t.b + 1), (t.a - 1) * (t.b - 1)];
+    } else {
+      near = [ans + 1, ans - 1, ans + 2, ans - 2];
+      far = [ans + 3, ans - 3, t.op === 'gapB' ? t.a : t.b, ans * 2, ans + 4];
+    }
+    const max = t.op === 'mul' ? 120 : 15;
+    const ok = (x) => Number.isInteger(x) && x > 0 && x <= max && x !== ans;
+    const out = new Set();
+    shuffle(near.filter(ok)).forEach((x) => { if (out.size < count) out.add(x); });
+    shuffle(far.filter(ok)).forEach((x) => { if (out.size < count) out.add(x); });
+    let k = 1;
+    while (out.size < count && k < 50) { const x = ans + (k % 2 ? k : -k); if (ok(x)) out.add(x); k++; }
+    return Array.from(out).slice(0, count);
+  }
+  const choicesFor = (t, n) => shuffle([t.answer].concat(distractors(t, n - 1)));
+
+  /* ---------------- Einstellungen ---------------- */
+  const ARTEN = [['mul', `Mal ${SIGN}`], ['div', 'Geteilt :'], ['gap', 'Lücken ▢'], ['mix', 'Gemischt']];
+  const ICON_UHR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>';
+  const ICON_HERZ = '<svg viewBox="0 0 24 24"><path class="herz" d="M12 21.2 10.6 20C5.4 15.3 2 12.2 2 8.4 2 5.3 4.4 3 7.4 3c1.7 0 3.4.8 4.6 2.1C13.2 3.8 14.9 3 16.6 3 19.6 3 22 5.3 22 8.4c0 3.8-3.4 6.9-8.6 11.6z"/></svg>';
+  const ICON_BLITZ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>';
+  const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
+  const MODI = {
+    countdown: { name: 'Countdown', kurz: '60 Sekunden', icon: ICON_UHR, text: 'Möglichst viele Treffer in 60 Sekunden.' },
+    survive: { name: 'Survive', kurz: '3 Leben', icon: ICON_HERZ, text: '3 Leben – alle 5 Treffer wird es schneller.' },
+    speed: { name: 'Speed', kurz: '20 Treffer', icon: ICON_BLITZ, text: '20 Treffer so schnell wie möglich.' },
+  };
+  let wahl = Object.assign({ reihen: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], art: 'mul', modus: 'countdown' }, speicher.lesen('wahl', {}));
+  if (!Array.isArray(wahl.reihen) || !wahl.reihen.length) wahl.reihen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  if (!MODI[wahl.modus]) wahl.modus = 'countdown';
+  if (!ARTEN.some((a) => a[0] === wahl.art)) wahl.art = 'mul';
+
+  function startKarteZeichnen() {
+    const alle = wahl.reihen.length === 10;
+    $('#reihenWahl').innerHTML = `<button type="button" class="chip alle" data-reihe="alle" aria-pressed="${alle}">Alle</button>`
+      + Array.from({ length: 10 }, (_, i) => i + 1).map((r) => `<button type="button" class="chip" data-reihe="${r}" aria-pressed="${!alle && wahl.reihen.includes(r)}">${r}</button>`).join('');
+    $('#artWahl').innerHTML = ARTEN.map(([k, n]) => `<button type="button" class="chip" data-art="${k}" aria-pressed="${wahl.art === k}">${n}</button>`).join('');
+    $('#modusWahl').innerHTML = Object.keys(MODI).map((k) => `<button type="button" class="modus" data-modus="${k}" aria-pressed="${wahl.modus === k}">${MODI[k].icon}<b>${MODI[k].name}</b><small>${MODI[k].kurz}</small></button>`).join('');
+    $('#losKnopf').disabled = !wahl.reihen.length;
+  }
+  $('#reihenWahl').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-reihe]');
+    if (!b) return;
+    const v = b.dataset.reihe;
+    if (v === 'alle') wahl.reihen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    else {
+      const r = +v;
+      if (wahl.reihen.length === 10) wahl.reihen = [r]; // aus «Alle» heraus: nur diese Reihe
+      else if (wahl.reihen.includes(r)) wahl.reihen = wahl.reihen.filter((x) => x !== r);
+      else wahl.reihen = wahl.reihen.concat(r).sort((a, b2) => a - b2);
+      if (!wahl.reihen.length) wahl.reihen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    }
+    startKarteZeichnen();
+  });
+  $('#artWahl').addEventListener('click', (e) => { const b = e.target.closest('[data-art]'); if (b) { wahl.art = b.dataset.art; startKarteZeichnen(); } });
+  $('#modusWahl').addEventListener('click', (e) => { const b = e.target.closest('[data-modus]'); if (b) { wahl.modus = b.dataset.modus; startKarteZeichnen(); } });
+
+  /* ---------------- Szene (Grafik aus Teilmal) ---------------- */
+  const TG_QUADS = ['tl', 'tr', 'bl', 'br'];
+  const TG_POS = { tl: [62.6, 62.6], tr: [137.4, 62.6], bl: [62.6, 137.4], br: [137.4, 137.4] };
+  const TG_TARGET_SVG = `<svg viewBox="0 0 200 200" aria-hidden="true">
+    <defs>
+      <radialGradient id="tgStraw" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#F0C873"/><stop offset=".75" stop-color="#C98B3F"/><stop offset="1" stop-color="#9A6428"/></radialGradient>
+      <pattern id="tgStrawLines" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><path d="M0 3h6" stroke="#8A5A22" stroke-width="1" opacity=".35"/></pattern>
+    </defs>
+    <circle cx="100" cy="100" r="98" fill="url(#tgStraw)"/>
+    <circle cx="100" cy="100" r="98" fill="url(#tgStrawLines)"/>
+    <circle cx="100" cy="100" r="98" fill="none" stroke="#6B4320" stroke-width="4"/>
+    ${TG_QUADS.map((q) => {
+      const d = { tl: 'M100,100 L12,100 A88,88 0 0 1 100,12 Z', tr: 'M100,100 L100,12 A88,88 0 0 1 188,100 Z', bl: 'M100,100 L100,188 A88,88 0 0 1 12,100 Z', br: 'M100,100 L188,100 A88,88 0 0 1 100,188 Z' }[q];
+      const [x, y] = TG_POS[q];
+      return `<g class="tg-q q-${q}" data-q="${q}"><path class="fill" d="${d}"/><circle class="badge" cx="${x}" cy="${y}" r="26"/><text class="tg-num" id="tgn-${q}" x="${x}" y="${y + 1}" text-anchor="middle">?</text></g>`;
+    }).join('')}
+    <line x1="100" y1="12" x2="100" y2="188" stroke="#4A2E17" stroke-width="3"/>
+    <line x1="12" y1="100" x2="188" y2="100" stroke="#4A2E17" stroke-width="3"/>
+    <circle cx="100" cy="100" r="88" fill="none" stroke="#4A2E17" stroke-width="3"/>
+    <circle cx="100" cy="100" r="9" fill="#E8553A" stroke="#4A2E17" stroke-width="2.5"/>
+  </svg>`;
+  const TG_STAND_SVG = '<svg viewBox="0 0 120 80" aria-hidden="true"><ellipse cx="60" cy="72" rx="50" ry="7" fill="rgba(0,0,0,.22)"/><path d="M34 6 16 70M86 6l18 64M44 6l-4 64M76 6l4 64" stroke="#5B3A22" stroke-width="7" stroke-linecap="round"/><path d="M18 60h84" stroke="#6B4320" stroke-width="6" stroke-linecap="round"/></svg>';
+  const TG_BOW_SVG = `<svg viewBox="0 0 400 300" aria-hidden="true">
+    <defs><linearGradient id="tgWood" x1="0" x2="1"><stop offset="0" stop-color="#6B4320"/><stop offset=".5" stop-color="#A86F3A"/><stop offset="1" stop-color="#6B4320"/></linearGradient>
+      <linearGradient id="tgSteel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D5DCE3"/><stop offset="1" stop-color="#7C8794"/></linearGradient></defs>
+    <path d="M168 118 182 300h36l14-182Z" fill="url(#tgWood)" stroke="#4A2E17" stroke-width="5"/>
+    <path d="M186 222q14 26 28 0" fill="none" stroke="#4A2E17" stroke-width="7" stroke-linecap="round"/>
+    <rect x="196" y="202" width="8" height="18" rx="2" fill="#4A2E17"/>
+    <path class="tg-limb" d="M40 82C90 20 150 55 200 60c50-5 110-40 160 22" fill="none" stroke="#3E4A57" stroke-width="16" stroke-linecap="round"/>
+    <path class="tg-limb" d="M40 82C90 20 150 55 200 60c50-5 110-40 160 22" fill="none" stroke="url(#tgSteel)" stroke-width="8" stroke-linecap="round"/>
+    <rect x="148" y="50" width="104" height="16" rx="5" fill="#4A2E17"/><rect x="148" y="50" width="104" height="6" rx="3" fill="#C99A5B"/>
+    <polyline id="tgString" points="40,82 200,82 360,82" fill="none" stroke="#F3E9D6" stroke-width="3.4"/>
+    <g id="tgBolt"><line x1="200" y1="82" x2="200" y2="-30" stroke="#4A3117" stroke-width="5" stroke-linecap="round"/><path d="M200-40l-10 24h20Z" fill="#9AA3AD"/><path d="M200 78l-11 15 11-4 11 4z" fill="#E8553A"/></g>
+  </svg>`;
+  const TG_ARROW_SVG = '<svg viewBox="0 0 20 140" aria-hidden="true"><line x1="10" y1="140" x2="10" y2="12" stroke="#4A3117" stroke-width="5" stroke-linecap="round"/><path d="M10 0 2 26h16Z" fill="#9AA3AD"/><path d="M10 136l-9 12 9-3 9 3z" fill="#E8553A"/></svg>';
+  const TG_STUCK_SVG = '<svg viewBox="0 0 60 60" aria-hidden="true"><line x1="6" y1="6" x2="40" y2="44" stroke="#4A3117" stroke-width="4.5" stroke-linecap="round"/><path d="M40 44l2 14 6-10 10-2z" fill="#E8553A"/><circle cx="6" cy="6" r="3.5" fill="#3B2415"/></svg>';
+  const TG_CLOUD = (style) => `<svg class="tg-cloud" style="${style}" viewBox="0 0 100 40" aria-hidden="true"><path d="M10 32a12 12 0 0 1 4-23 15 15 0 0 1 28-4 13 13 0 0 1 20 10 10 10 0 0 1-2 17z" fill="#fff"/></svg>`;
+  $('.tg-sky').insertAdjacentHTML('beforeend', TG_CLOUD('left:6%;top:12%;width:16%;--d:70s') + TG_CLOUD('left:62%;top:20%;width:20%;--d:95s') + TG_CLOUD('left:34%;top:6%;width:11%;--d:120s'));
+  $('#tgstand').innerHTML = TG_STAND_SVG;
+  $('#tgtarget').innerHTML = TG_TARGET_SVG;
+  $('#tgbow').innerHTML = TG_BOW_SVG;
+  $('#tgflight').innerHTML = TG_ARROW_SVG;
+
+  /* ---------------- Runde ---------------- */
+  const RUN = { ms: 60000, goal: 20, lives: 3 };
+  const SURVIVE = { step: 5, factor: 0.9 };
+  const game = { locked: true, tries: 0, tg: { vals: {}, aim: null }, run: null, picker: null, task: null };
+  const runOn = () => !!(game.run && !game.run.done);
+  const surviveLevel = () => Math.floor((game.run ? game.run.ok : 0) / SURVIVE.step) + 1;
+  const surviveMs = (start, min) => Math.max(min, start * Math.pow(SURVIVE.factor, surviveLevel() - 1));
+  const fmtSec = (ms) => (ms / 1000).toFixed(1).replace('.', ',');
+  const runElapsed = () => (game.run ? (game.run.end || performance.now()) - game.run.t0 : 0);
+  const runLeft = () => Math.max(0, RUN.ms - runElapsed());
+
+  function hudZeichnen() {
+    const r = game.run, m = r.mode;
+    $('#tghud').innerHTML = `<div class="hud m-${m}">
+      ${m === 'survive' ? `<span class="leben" aria-label="Leben">${ICON_HERZ.repeat(r.lives)}</span><span class="level">Level <b id="hudLevel">1</b></span>` : ''}
+      ${m === 'countdown' ? `<span>${ICON_UHR}<span class="balken"><i id="hudBar"></i></span><b id="hudZeit">${RUN.ms / 1000}</b><small>s</small></span>` : ''}
+      ${m === 'speed' ? `<span>${ICON_UHR}<b id="hudZeit">0,0</b><small>s</small></span>` : ''}
+      <span class="ok" id="hudOkBox">${ICON_OK}<b id="hudOk">0</b>${m === 'speed' ? `<small>/<span id="hudZiel">${r.goal}</span></small>` : ''}</span>
+    </div>`;
+  }
+  function hud() {
+    const r = game.run;
+    if (!r) return;
+    const ok = $('#hudOk'); if (ok) ok.textContent = r.ok;
+    if (r.mode === 'countdown') {
+      const left = runLeft();
+      const z = $('#hudZeit'); if (z) z.textContent = Math.ceil(left / 1000);
+      const bar = $('#hudBar'); if (bar) { bar.style.transform = `scaleX(${left / RUN.ms})`; bar.parentNode.classList.toggle('knapp', left < 10000); }
+    } else if (r.mode === 'speed') {
+      const z = $('#hudZeit'); if (z) z.textContent = fmtSec(runElapsed());
+      const ziel = $('#hudZiel'); if (ziel) ziel.textContent = r.goal;
+    }
+    $$('.hud .leben .herz').forEach((h, i) => h.classList.toggle('weg', i >= r.lives));
+    const lv = $('#hudLevel'); if (lv) lv.textContent = surviveLevel();
+  }
+  function runTick() {
+    if (!runOn()) return;
+    if (game.run.mode === 'countdown' && runLeft() <= 0) { runFinish(); return; }
+    hud();
+  }
+  function runRight() {
+    const r = game.run;
+    if (!runOn()) return true;
+    r.ok++;
+    hud();
+    const box = $('#hudOkBox'); if (box) { box.classList.remove('pop'); void box.offsetWidth; box.classList.add('pop'); }
+    if (r.mode === 'speed' && r.ok >= r.goal) { runFinish(); return true; }
+    if (r.mode === 'survive' && r.ok % SURVIVE.step === 0) sfx.level();
+    return false;
+  }
+  function runWrong(t) {
+    const r = game.run;
+    if (!runOn()) return true;
+    r.wrong++;
+    if (t && !r.wrongs.some((w) => w.key === t.key)) r.wrongs.push(t);
+    if (t) game.picker.falsch(t);
+    if (r.mode === 'survive') {
+      r.lives--;
+      hud();
+      if (r.lives <= 0) { runFinish(); return true; }
+    } else if (r.mode === 'speed') {
+      r.goal++; // jede falsche Antwort verlangt einen Treffer mehr
+      hud();
+    }
+    return false;
+  }
+  function taskClock(ms, onTimeout) {
+    const el = $('#tgclock i');
+    el.getAnimations().forEach((a) => a.cancel());
+    el.animate([{ transform: 'scaleX(1)' }, { transform: 'scaleX(0)' }], { duration: ms, fill: 'forwards' });
+    clearTimeout(game.taskT);
+    game.taskT = gLater(onTimeout, ms);
+  }
+  function taskClockStop() {
+    clearTimeout(game.taskT);
+    $('#tgclock i').getAnimations().forEach((a) => a.pause());
+  }
+
+  function spielStarten() {
+    alleTimerStopp();
+    clearInterval(game.runTimer);
+    speicher.schreiben('wahl', wahl);
+    game.picker = createPicker(buildPool(wahl.reihen, wahl.art));
+    game.run = { mode: wahl.modus, goal: RUN.goal, ok: 0, wrong: 0, lives: RUN.lives, t0: performance.now(), end: 0, done: false, wrongs: [] };
+    game.tg = { vals: {}, aim: null };
+    game.locked = true;
+    $('#startKarte').hidden = true;
+    $('#endeKarte').hidden = true;
+    $('#tgclock').hidden = wahl.modus !== 'survive';
+    $$('#tgarrows .tg-stuck').forEach((a) => a.remove());
+    hudZeichnen();
+    $('#tghelp').classList.remove('hide');
+    game.runTimer = setInterval(runTick, 100);
+    tgNext();
+  }
+  function runFinish() {
+    const r = game.run;
+    if (!runOn()) return;
+    r.done = true; r.end = performance.now();
+    game.locked = true;
+    clearInterval(game.runTimer);
+    taskClockStop();
+    if (game.tg.aim) { game.tg.aim = null; tgReticle(0, 0, false); $('#tgbow').classList.remove('drawn'); }
+    hud();
+    gLater(ergebnisZeigen, 700);
+  }
+  function ergebnisZeigen() {
+    const r = game.run, m = r.mode;
+    // Rekord pro Modus, Reihen und Aufgabenart (Speed: weniger Zeit ist besser)
+    const brett = `${m}|${wahl.art}|${wahl.reihen.join('-')}`;
+    const rekorde = speicher.lesen('rekorde', {});
+    const wert = m === 'speed' ? (r.ok >= r.goal ? Math.round(runElapsed()) : null) : (r.ok > 0 ? r.ok : null);
+    const alt = rekorde[brett];
+    const besser = wert != null && (alt == null || (m === 'speed' ? wert < alt : wert > alt));
+    if (besser) { rekorde[brett] = wert; speicher.schreiben('rekorde', rekorde); }
+    let titel, zahl, text;
+    if (m === 'countdown') { titel = 'Zeit ist um!'; zahl = r.ok; text = r.ok === 1 ? 'Treffer in 60 Sekunden' : 'Treffer in 60 Sekunden'; }
+    else if (m === 'survive') { titel = 'Alle Leben weg!'; zahl = r.ok; text = `Treffer · Level ${surviveLevel()}`; }
+    else { titel = 'Geschafft!'; zahl = `${fmtSec(runElapsed())} s`; text = `für ${r.ok} Treffer`; }
+    const rekordText = besser && alt != null ? '<span class="rekord">Neuer Rekord!</span>'
+      : alt != null ? `<span class="rekord alt">Rekord: ${m === 'speed' ? fmtSec(alt) + ' s' : alt}</span>`
+      : besser ? '<span class="rekord">Erster Rekord!</span>' : '';
+    const fehler = r.wrongs.slice(0, 8);
+    $('#endeTitel').textContent = titel;
+    $('#endeInhalt').innerHTML = `<p class="ergebnis-zahl">${zahl}</p><p class="ergebnis-text">${text}</p>${rekordText}
+      ${fehler.length ? `<div class="nochmal"><p>Diese Rechnungen nochmals üben:</p><ul>${fehler.map((t) => `<li>${taskText(t, true)}</li>`).join('')}</ul></div>` : ''}`;
+    $('#endeKarte').hidden = false;
+    if (besser) sfx.win();
+    $('#nochmalKnopf').focus({ preventScroll: true });
+  }
+
+  /* ---------------- Spielablauf (aus Teilmal «Zielscheibe») ---------------- */
+  function tgNext() {
+    if (!runOn()) return;
+    const t = game.picker.next();
+    game.task = t;
+    game.tries = 0;
+    const vals = choicesFor(t, 4);
+    TG_QUADS.forEach((q, i) => {
+      game.tg.vals[q] = vals[i];
+      const n = $(`#tgn-${q}`);
+      if (n) { n.textContent = vals[i]; n.setAttribute('font-size', String(vals[i]).length > 2 ? 22 : 27); }
+    });
+    $$('.tg-q').forEach((g) => g.classList.remove('correct', 'wrong'));
+    $$('#tgarrows .tg-stuck').forEach((a) => { a.classList.add('gone'); setTimeout(() => a.remove(), 400); });
+    $('#tgtask').innerHTML = taskHTML(t);
+    $('#tgtask').setAttribute('aria-label', taskText(t));
+    const sign = $('#tgsign');
+    sign.classList.remove('drop'); void sign.offsetWidth; sign.classList.add('drop');
+    game.locked = false;
+    if (game.run.mode === 'survive') taskClock(surviveMs(8000, 2200), tgTimeout);
+  }
+  function tgTimeout() {
+    if (game.locked || !runOn()) return;
+    game.locked = true;
+    const t = game.task;
+    sfx.bad();
+    tgToast(`Zu spät! ${taskText(t, true)}`, 'bad');
+    const q = TG_QUADS.find((k) => game.tg.vals[k] === t.answer);
+    const g = $(`.tg-q.q-${q}`); if (g) g.classList.add('correct');
+    if (!runWrong(t)) gLater(tgNext, 1300);
+  }
+  function tgToast(text, cls) {
+    const el = $('#tgtoast');
+    el.textContent = text;
+    el.className = `tg-toast show ${cls}`;
+    clearTimeout(game.tgToastT);
+    game.tgToastT = gLater(() => el.classList.remove('show'), 1000);
+  }
+  /* Ablauf eines Schusses:
+     1. Finger aufs Bild → der Bogen wird gespannt: Sehne und Pfeil gleiten sichtbar nach hinten.
+     2. Erst wenn er gespannt ist, erscheint das Fadenkreuz – jetzt durch Ziehen zielen
+        (die Bewegung des Fingers verschiebt das Fadenkreuz doppelt so weit).
+     3. Loslassen → die Sehne schnellt nach vorn, der Pfeil fliegt.
+     Wer loslässt, bevor der Bogen gespannt ist, schiesst nicht. */
+  const TG_DRAW_MS = 380;
+  function tgBind() {
+    const stage = $('#tgstage');
+    const SENS = 2;
+    const center = () => { const r = $('#tgtarget').getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width }; };
+    stage.addEventListener('pointerdown', (e) => {
+      const g = game.tg;
+      if (game.locked || !runOn() || e.button > 0 || g.aim) return;
+      if (e.target.closest('button, .overlay')) return;
+      const c = center();
+      g.aim = { id: e.pointerId, x0: e.clientX, y0: e.clientY, cx: c.x, cy: c.y, maxR: c.w * 0.62, dx: 0, dy: 0, ready: false };
+      try { stage.setPointerCapture(e.pointerId); } catch (err) { /* */ }
+      $('#tghelp').classList.add('hide');
+      const a = g.aim;
+      tgDraw(1, TG_DRAW_MS).then((done) => {
+        if (!done || game.tg.aim !== a) return;
+        a.ready = true;
+        $('#tgbow').classList.add('drawn');
+        tgReticle(a.cx + a.dx, a.cy + a.dy, true);
+      });
+      e.preventDefault();
+    });
+    stage.addEventListener('pointermove', (e) => {
+      const g = game.tg, a = g.aim;
+      if (!a || e.pointerId !== a.id) return;
+      let dx = (e.clientX - a.x0) * SENS, dy = (e.clientY - a.y0) * SENS;
+      const d = Math.hypot(dx, dy);
+      if (d > a.maxR) { dx *= a.maxR / d; dy *= a.maxR / d; }
+      a.dx = dx; a.dy = dy;
+      g.nx = dx / a.maxR; g.ny = dy / a.maxR;
+      tgBow();
+      if (a.ready) tgReticle(a.cx + dx, a.cy + dy, true);
+    });
+    const up = (e) => {
+      const g = game.tg, a = g.aim;
+      if (!a || e.pointerId !== a.id) return;
+      g.aim = null;
+      tgReticle(0, 0, false);
+      $('#tgbow').classList.remove('drawn');
+      if (!a.ready || game.locked || !runOn()) { g.nx = 0; g.ny = 0; tgDraw(0, 220); return; }
+      tgRelease();
+      tgFire(a.cx + a.dx, a.cy + a.dy);
+    };
+    stage.addEventListener('pointerup', up);
+    stage.addEventListener('pointercancel', (e) => {
+      const g = game.tg;
+      if (g.aim && e.pointerId === g.aim.id) { g.aim = null; tgReticle(0, 0, false); $('#tgbow').classList.remove('drawn'); g.nx = 0; g.ny = 0; tgDraw(0, 220); }
+    });
+  }
+  function tgDraw(to, ms) {
+    const g = game.tg;
+    cancelAnimationFrame(g.drawRaf);
+    const from = g.pull || 0;
+    const t0 = performance.now(), dur = reduceMotion() ? 1 : ms * Math.abs(to - from);
+    return new Promise((resolve) => {
+      const step = (now) => {
+        const u = dur ? Math.min(1, (now - t0) / dur) : 1;
+        const ease = to > from ? 1 - Math.pow(1 - u, 3) : u * u; // spannen: zuerst schnell, dann zäh
+        g.pull = from + (to - from) * ease;
+        tgBow();
+        if (u < 1) g.drawRaf = requestAnimationFrame(step); else resolve(true);
+      };
+      g.drawRaf = requestAnimationFrame(step);
+    });
+  }
+  function tgRelease() {
+    const g = game.tg;
+    cancelAnimationFrame(g.drawRaf);
+    g.pull = 0; g.nx = 0; g.ny = 0;
+    tgBow();
+    const rig = $('#tgbow');
+    rig.classList.remove('kick'); void rig.offsetWidth; rig.classList.add('kick');
+  }
+  function tgLocal(x, y) { const r = $('#tgstage').getBoundingClientRect(); return { x: x - r.left, y: y - r.top }; }
+  function tgReticle(x, y, on) {
+    const el = $('#tgret');
+    el.classList.toggle('on', on);
+    if (on) { const p = tgLocal(x, y); el.style.left = `${p.x}px`; el.style.top = `${p.y}px`; }
+  }
+  function tgBow() {
+    const rig = $('#tgbow');
+    const g = game.tg;
+    const nx = clamp(g.nx || 0, -1, 1), ny = clamp(g.ny || 0, -1, 1), pull = clamp(g.pull || 0, 0, 1);
+    rig.style.transform = `translateX(-50%) perspective(900px) translate(${nx * 14}px, ${ny * 12}px) rotateZ(${nx * 8}deg) rotateX(${-ny * 7}deg)`;
+    // Beim Spannen biegen sich die Bogenarme nach hinten, die Sehne zieht den Pfeil mit
+    const tx = 40 + pull * 16, ty = 82 + pull * 16;
+    const limb = `M${tx} ${ty}C${90 + pull * 6} ${20 + pull * 14} 150 55 200 60c50-5 ${110 - pull * 6} ${-40 + pull * 14} ${160 - pull * 16} ${22 + pull * 16}`;
+    $$('#tgbow .tg-limb').forEach((el) => el.setAttribute('d', limb));
+    $('#tgString').setAttribute('points', `${tx},${ty} 200,${82 + pull * 110} ${400 - tx},${ty}`);
+    $('#tgBolt').setAttribute('transform', `translate(0,${pull * 110})`);
+  }
+  /** Schuss per Taste: spannen, dann genau in die Mitte des Feldes */
+  function tgShootQuad(q) {
+    if (game.locked || !runOn() || game.tg.aim) return;
+    game.locked = true;
+    tgDraw(1, TG_DRAW_MS * 0.7).then((done) => {
+      if (!done || !runOn()) return;
+      const r = $('#tgtarget').getBoundingClientRect();
+      const [x, y] = TG_POS[q];
+      tgRelease();
+      tgFire(r.left + (x / 200) * r.width, r.top + (y / 200) * r.height);
+    });
+  }
+  function tgFire(x, y) {
+    game.locked = true;
+    const fl = $('#tgflight'), bow = $('#tgbow').getBoundingClientRect();
+    const from = tgLocal(bow.left + bow.width / 2, bow.top + bow.height * 0.27), to = tgLocal(x, y);
+    const ang = (Math.atan2(to.x - from.x, -(to.y - from.y)) * 180) / Math.PI;
+    const fast = reduceMotion();
+    fl.style.opacity = '1';
+    fl.animate([
+      { left: `${from.x}px`, top: `${from.y}px`, transform: 'translate(-50%, 0) scale(1.25) rotate(0deg)' },
+      { left: `${to.x}px`, top: `${to.y}px`, transform: `translate(-50%, 0) scale(.5) rotate(${ang}deg)` },
+    ], { duration: fast ? 1 : 300, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' });
+    gLater(() => { fl.style.opacity = '0'; fl.getAnimations().forEach((a) => a.cancel()); tgHit(x, y); }, fast ? 20 : 310);
+  }
+  function tgHit(x, y) {
+    if (!runOn()) return;
+    const r = $('#tgtarget').getBoundingClientRect();
+    const dx = x - (r.left + r.width / 2), dy = y - (r.top + r.height / 2);
+    const p = tgLocal(x, y);
+    const stuck = document.createElement('span');
+    stuck.className = 'tg-stuck';
+    stuck.style.left = `${p.x}px`; stuck.style.top = `${p.y}px`;
+    stuck.innerHTML = TG_STUCK_SVG;
+    $('#tgarrows').appendChild(stuck);
+    if (Math.hypot(dx, dy) > r.width * 0.44) { // daneben
+      tgToast('Daneben – nochmal!', 'bad');
+      stuck.classList.add('miss');
+      game.locked = false;
+      return;
+    }
+    const q = (dy < 0 ? 't' : 'b') + (dx < 0 ? 'l' : 'r');
+    const t = game.task, v = game.tg.vals[q];
+    const first = game.tries === 0;
+    game.tries++;
+    const g = $(`.tg-q.q-${q}`);
+    if (v === t.answer) {
+      taskClockStop();
+      g.classList.add('correct');
+      sfx.good();
+      tgToast('Treffer! ✓', 'good');
+      if (first && runRight()) return;
+      gLater(tgNext, 650);
+    } else {
+      g.classList.add('wrong');
+      sfx.bad();
+      tgToast('Falsches Feld – nochmal!', 'bad');
+      // falsch: zählt (Survive: jedes Mal ein Leben, sonst nur der erste Versuch)
+      if ((first || game.run.mode === 'survive') && runWrong(t)) return;
+      gLater(() => { g.classList.remove('wrong'); if (runOn()) game.locked = false; }, 650);
+    }
+  }
+
+  /* ---------------- Knöpfe und Tasten ---------------- */
+  tgBind();
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (/^[1-4]$/.test(e.key) && $('#startKarte').hidden && $('#endeKarte').hidden) tgShootQuad(TG_QUADS[+e.key - 1]);
+    if (e.key === 'Enter' && !$('#startKarte').hidden && document.activeElement === document.body) spielStarten();
+  });
+  $('#losKnopf').addEventListener('click', spielStarten);
+  $('#nochmalKnopf').addEventListener('click', spielStarten);
+  $('#einstellKnopf').addEventListener('click', () => { $('#endeKarte').hidden = true; startKarteZeichnen(); $('#startKarte').hidden = false; });
+  $('#menueKnopf').addEventListener('click', () => {
+    if (runOn()) { game.run.done = true; game.locked = true; clearInterval(game.runTimer); alleTimerStopp(); taskClockStop(); }
+    $('#endeKarte').hidden = true; startKarteZeichnen(); $('#startKarte').hidden = false;
+  });
+  $('#tonKnopf').addEventListener('click', () => { tonAn = !tonAn; speicher.schreiben('ton', tonAn); tonKnopf(); if (tonAn) sfx.good(); });
+  tonKnopf();
+  startKarteZeichnen();
+})();
+</script>
+</body>
+</html>

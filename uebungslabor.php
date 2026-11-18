@@ -18,8 +18,8 @@ $uebungsfaecher = [
             [
                 'titel'        => 'Bogenschiessen',
                 'beschreibung' => 'Einmaleins-Spiel: Bogen spannen, zielen und das Feld mit dem richtigen Ergebnis treffen.',
-                'link'         => TEILMAL_URL . '/#spiel=zielscheibe',
-                'quelle'       => 'Teilmal',
+                'link'         => 'spiele/bogenschiessen.html',
+                'quelle'       => 'Einmaleins-Spiel',
             ],
         ],
     ],

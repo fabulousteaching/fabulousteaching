@@ -33,12 +33,13 @@ require __DIR__ . '/inc/kopf.php';
         <p class="werkzeug-unterzeile">Die Vokabelplattform für Fremdsprachen</p>
         <p>Vokabeln einfügen – und Vokaboom macht daraus Lernkarten mit Bildern, diverse Spiele und Übungen. Über einen QR-Code lassen sie sich mit der ganzen Klasse teilen. Als Lehrperson kann man Klassen anlegen, Aufgaben zuweisen und Statistiken einsehen. Auch Live-Spiele mit der Klasse sind möglich.</p>
         <ul class="werkzeug-merkmale">
-          <li><?= icon('layers') ?> Lernkarten mit Bild</li>
-          <li><?= icon('puzzle') ?> Zuordnen &amp; Memory</li>
-          <li><?= icon('mic') ?> Aussprechen</li>
-          <li><?= icon('headphones') ?> Hören &amp; Schreiben</li>
-          <li><?= icon('circle-check') ?> Test</li>
+          <li><?= icon('layers') ?> Lernkarten mit Bildern</li>
+          <li><?= icon('gamepad-2') ?> Spiele &amp; Übungen</li>
           <li><?= icon('qr-code') ?> Teilen per QR-Code</li>
+          <li><?= icon('users') ?> Klassen anlegen</li>
+          <li><?= icon('clipboard-list') ?> Aufgaben zuweisen</li>
+          <li><?= icon('chart-column') ?> Statistiken</li>
+          <li><?= icon('radio') ?> Live-Spiele</li>
         </ul>
         <a class="knopf knopf-vokaboom" href="<?= e(VOKABOOM_URL) ?>" target="_blank" rel="noopener">Vokaboom öffnen <?= icon('external-link') ?></a>
       </div>

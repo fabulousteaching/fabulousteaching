@@ -76,6 +76,8 @@ button:focus-visible{outline:3px solid #1d6fd1;outline-offset:2px}
 .tg-toast.bad{background:#D9453B;color:#fff}
 .tg-help{position:absolute;left:50%;bottom:3cqh;z-index:7;transform:translateX(-50%);margin:0;padding:.35rem .9rem;border-radius:99px;background:rgba(36,22,10,.55);color:#fff;font-weight:700;font-size:.9rem;white-space:nowrap;pointer-events:none;transition:opacity .4s}
 .tg-help.hide{opacity:0}
+.tg-copy{position:absolute;right:12px;bottom:10px;z-index:7;margin:0;font-size:.8rem;font-weight:700;color:#fff;opacity:.85;text-shadow:0 1px 2px rgba(0,0,0,.55);pointer-events:none;white-space:nowrap}
+.karte .copy{margin:12px 0 0;font-size:.8rem;font-weight:700;color:#8a6a48}
 
 /* ---------- Anzeige (Zeit, Leben, Treffer) ---------- */
 .tg-hud{position:absolute;left:12px;top:12px;z-index:6}
@@ -138,8 +140,14 @@ button:focus-visible{outline:3px solid #1d6fd1;outline-offset:2px}
   .tg-hud{left:8px;top:auto;bottom:8px;z-index:9}
   .hud{gap:.5rem;padding:.3rem .55rem}
   .hud .balken{display:none}
-  .tg-sign{top:2cqh}
+  .tg-sign{top:6cqh;padding:1.4cqh 5cqw;border-width:5px;border-radius:20px;box-shadow:0 7px 0 rgba(0,0,0,.25)}
+  .tg-sign::before,.tg-sign::after{top:-6cqh;height:6cqh;width:6px}
+  .tg-sign .task{font-size:clamp(2.3rem,13.5cqw,3.6rem)}
+  .tg-sign .task .slot{border-width:4px}
+  .tg-clock{top:calc(6cqh + 13.5cqw + 5cqh + 8px);width:62cqw;height:11px}
+  .tg-toast{top:calc(6cqh + 13.5cqw + 8cqh);font-size:1.15rem}
   .tg-help{display:none}
+  .tg-copy{right:auto;left:10px;top:8px;bottom:auto;font-size:.72rem}
   .ecke{top:auto;bottom:8px;right:8px}
   .modi{grid-template-columns:1fr}
   .modus{grid-template-columns:auto 1fr;justify-items:start;text-align:left;column-gap:10px}
@@ -164,6 +172,7 @@ button:focus-visible{outline:3px solid #1d6fd1;outline-offset:2px}
   <div class="tg-flight" id="tgflight" aria-hidden="true"></div>
   <div class="tg-toast" id="tgtoast" role="status"></div>
   <p class="tg-help hide" id="tghelp">Finger aufs Bild = spannen · ziehen = zielen · loslassen = schiessen</p>
+  <p class="tg-copy">© <span class="jahr">2026</span> fabulousteaching.ch</p>
 
   <div class="ecke">
     <button type="button" id="tonKnopf" aria-label="Ton aus" title="Ton an/aus"></button>
@@ -189,6 +198,7 @@ button:focus-visible{outline:3px solid #1d6fd1;outline-offset:2px}
       </div>
       <button type="button" class="los" id="losKnopf">Los geht's!</button>
       <p class="hinweis">Finger aufs Bild legen = Bogen spannen · ziehen = zielen · loslassen = schiessen. Am Computer gehen auch die Tasten 1–4.</p>
+      <p class="copy">© <span class="jahr">2026</span> fabulousteaching.ch</p>
     </div>
   </section>
 
@@ -199,6 +209,7 @@ button:focus-visible{outline:3px solid #1d6fd1;outline-offset:2px}
       <div id="endeInhalt"></div>
       <button type="button" class="los" id="nochmalKnopf">Nochmals</button>
       <button type="button" class="zweit" id="einstellKnopf">Andere Reihen oder Modus</button>
+      <p class="copy">© <span class="jahr">2026</span> fabulousteaching.ch</p>
     </div>
   </section>
 </main>
@@ -766,6 +777,7 @@ button:focus-visible{outline:3px solid #1d6fd1;outline-offset:2px}
   $('#tonKnopf').addEventListener('click', () => { tonAn = !tonAn; speicher.schreiben('ton', tonAn); tonKnopf(); if (tonAn) sfx.good(); });
   tonKnopf();
   startKarteZeichnen();
+  $$('.jahr').forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();
 </script>
 </body>

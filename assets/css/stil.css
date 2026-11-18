@@ -100,7 +100,7 @@ p{margin:0 0 1em}
 .menue-knopf[aria-expanded="true"] .zu{display:none}
 .menue-knopf[aria-expanded="true"] .auf{display:block}
 
-@media (max-width:1040px){
+@media (max-width:1100px){
   .marke-logo{width:48px;height:48px}
   .marke-text{font-size:1.25rem}
   .menue-knopf{display:grid}
@@ -347,7 +347,7 @@ p{margin:0 0 1em}
   .tuer-licht{background-size:70% 100%}
 }
 
-/* ---------- Übungslabor ---------- */
+/* ---------- Lerntools ---------- */
 .werkzeuge{display:grid;gap:28px}
 .werkzeug{--w:var(--orange);display:grid;grid-template-columns:220px minmax(0,1fr);gap:clamp(20px,4vw,44px);align-items:center;
   background:var(--papier);border:2px solid var(--tinte);border-radius:calc(var(--radius) + 6px);padding:clamp(20px,3.5vw,36px);box-shadow:6px 6px 0 var(--w)}
@@ -372,6 +372,43 @@ p{margin:0 0 1em}
 @media (max-width:720px){
   .werkzeug{grid-template-columns:1fr}
   .werkzeug-logo{width:140px}
+}
+
+/* ---------- Übungslabor ---------- */
+.ul-frage{text-align:center;margin-bottom:24px}
+.ul-faecher{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.ul-fach{--f:var(--orange);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:28px 20px 24px;background:var(--papier);
+  border:2px solid var(--linie);border-radius:calc(var(--radius) + 4px);color:var(--tinte);text-decoration:none;transition:transform .18s,box-shadow .18s,border-color .18s,background-color .18s}
+.ul-fach:hover{color:var(--tinte);border-color:var(--tinte);transform:translateY(-4px);box-shadow:6px 6px 0 var(--f)}
+.ul-fach[aria-current="true"]{border-color:var(--tinte);background:color-mix(in srgb,var(--f) 12%,#fff);box-shadow:6px 6px 0 var(--f)}
+.ul-fach-symbol{width:84px;height:84px;border-radius:26px;display:grid;place-items:center;margin-bottom:6px;background:color-mix(in srgb,var(--f) 18%,#fff);
+  color:color-mix(in srgb,var(--f) 75%,#000);border:2px solid color-mix(in srgb,var(--f) 35%,#fff);transition:background-color .18s,color .18s}
+.ul-fach-symbol .icon{width:42px;height:42px;stroke-width:1.8}
+.ul-fach[aria-current="true"] .ul-fach-symbol{background:var(--f);color:#fff;border-color:var(--tinte)}
+.ul-fach-name{font-family:var(--schrift-titel);font-weight:600;font-size:1.5rem;line-height:1.1}
+.ul-fach-text{color:var(--tinte-weich);font-size:.95rem}
+.ul-bereich{--f:var(--orange);margin-top:34px;background:var(--papier);border:2px solid var(--tinte);border-radius:calc(var(--radius) + 6px);
+  padding:clamp(20px,3.5vw,32px);box-shadow:6px 6px 0 var(--f)}
+.ul-bereich[hidden]{display:none}
+.ul-bereich h2{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.ul-bereich-symbol{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:var(--f);color:#fff;border:2px solid var(--tinte)}
+.ul-bereich-symbol .icon{width:26px;height:26px}
+.ul-leer{display:flex;align-items:center;gap:14px;padding:18px 20px;border:2px dashed color-mix(in srgb,var(--f) 45%,#fff);border-radius:18px;background:color-mix(in srgb,var(--f) 6%,#fff)}
+.ul-leer .icon{width:32px;height:32px;flex:none;color:color-mix(in srgb,var(--f) 75%,#000)}
+.ul-leer p{margin:0;color:var(--tinte-weich)}
+.ul-leer strong{color:var(--tinte)}
+.ul-uebungen{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.ul-uebung{display:flex;flex-direction:column;gap:8px;padding:18px;border:2px solid var(--linie);border-radius:18px;background:color-mix(in srgb,var(--f) 5%,#fff)}
+.ul-uebung h3{margin:0}
+.ul-uebung p{margin:0;color:var(--tinte-weich);flex:1}
+.ul-uebung .knopf{align-self:flex-start}
+@media (max-width:700px){
+  .ul-faecher{grid-template-columns:1fr;gap:12px}
+  .ul-fach{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:16px;align-items:center;text-align:left;padding:14px 16px}
+  .ul-fach-symbol{grid-row:1/3;width:60px;height:60px;border-radius:18px;margin:0}
+  .ul-fach-symbol .icon{width:30px;height:30px}
+  .ul-fach-name{align-self:end;font-size:1.3rem}
+  .ul-fach-text{align-self:start}
 }
 
 /* ---------- Login & Mein Bereich ---------- */

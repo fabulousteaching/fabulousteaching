@@ -19,7 +19,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && menue.classList.contains('offen')) { schliessen(); knopf.focus(); }
     });
-    window.matchMedia('(min-width: 1041px)').addEventListener('change', function (m) { if (m.matches) schliessen(); });
+    window.matchMedia('(min-width: 1101px)').addEventListener('change', function (m) { if (m.matches) schliessen(); });
   }
 
   // ---------- Schatten unter der Kopfzeile beim Scrollen ----------
@@ -38,6 +38,28 @@
       tuer.classList.add('wackelt', 'zeigt');
     });
   });
+
+  // ---------- Übungslabor: Fach wählen ----------
+  var ulFaecher = Array.prototype.slice.call(document.querySelectorAll('.ul-fach'));
+  var ulBereiche = Array.prototype.slice.call(document.querySelectorAll('.ul-bereich'));
+  if (ulFaecher.length && ulBereiche.length) {
+    var ulZeigen = function (scrollen) {
+      var id = decodeURIComponent(window.location.hash.slice(1));
+      var ziel = null;
+      ulBereiche.forEach(function (b) { b.hidden = b.id !== id; if (b.id === id) ziel = b; });
+      ulFaecher.forEach(function (f) { f.setAttribute('aria-current', String(!!ziel && f.getAttribute('data-fach') === id)); });
+      if (ziel && scrollen) ziel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    ulFaecher.forEach(function (f) {
+      f.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.history.replaceState(null, '', '#' + f.getAttribute('data-fach'));
+        ulZeigen(true);
+      });
+    });
+    window.addEventListener('hashchange', function () { ulZeigen(true); });
+    ulZeigen(false);
+  }
 
   // ---------- Filter bei den Unterrichtsmaterialien ----------
   var raster = document.getElementById('raster');

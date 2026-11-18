@@ -3,7 +3,7 @@ require __DIR__ . '/inc/start.php';
 
 $seite        = 'uebungslabor';
 $titel        = 'Übungslabor';
-$beschreibung = 'Das Übungslabor: Vokaboom, die Vokabelplattform für Fremdsprachen, und Einmaleins zum Üben des kleinen und grossen Einmaleins.';
+$beschreibung = 'Das Übungslabor: Vokaboom, die Vokabelplattform für Fremdsprachen, und Teilmal zum Üben von Mal und Geteilt.';
 
 require __DIR__ . '/inc/kopf.php';
 ?>
@@ -45,15 +45,15 @@ require __DIR__ . '/inc/kopf.php';
       </div>
     </article>
 
-    <!-- Einmaleins (1x1) -->
-    <article class="werkzeug" style="--w:#0F766E" aria-labelledby="einmaleins-titel">
-      <a class="werkzeug-logo" href="<?= e(EINMALEINS_URL) ?>" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-        <img src="assets/bilder/einmaleins-logo.svg" width="160" height="152" alt="">
+    <!-- Teilmal (1x1, früher «Einmaleins») -->
+    <article class="werkzeug" style="--w:#0F766E" aria-labelledby="teilmal-titel">
+      <a class="werkzeug-logo" href="<?= e(TEILMAL_URL) ?>" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+        <img src="assets/bilder/teilmal-logo.svg" width="160" height="160" alt="">
       </a>
       <div class="werkzeug-text">
-        <h2 id="einmaleins-titel" class="einmaleins-name">Einmal<span>eins</span></h2>
-        <p class="werkzeug-unterzeile">Das kleine und das grosse Einmaleins üben</p>
-        <p>Rechnungen üben, festigen und automatisieren – am Tablet, am Computer und auf Papier. Schwierige Rechnungen kommen automatisch wieder, bis sie sitzen.</p>
+        <h2 id="teilmal-titel" class="teilmal-name"><span class="teil">Teil</span><span class="mal">mal</span></h2>
+        <p class="werkzeug-unterzeile">Mal &amp; Geteilt üben</p>
+        <p>Das kleine und das grosse Einmaleins üben, festigen und automatisieren – am Tablet, am Computer und auf Papier. Schwierige Rechnungen kommen automatisch wieder, bis sie sitzen.</p>
         <ul class="werkzeug-merkmale">
           <li><?= icon('calculator') ?> Trainer mit Rechenweg</li>
           <li><?= icon('chart-no-axes-column-increasing') ?> Reihen-Treppe</li>
@@ -62,7 +62,7 @@ require __DIR__ . '/inc/kopf.php';
           <li><?= icon('users') ?> Klassen &amp; Kinder-Logins</li>
           <li><?= icon('file-text') ?> Übungsblätter als PDF</li>
         </ul>
-        <a class="knopf knopf-einmaleins" href="<?= e(EINMALEINS_URL) ?>" target="_blank" rel="noopener">Einmaleins öffnen <?= icon('external-link') ?></a>
+        <a class="knopf knopf-teilmal" href="<?= e(TEILMAL_URL) ?>" target="_blank" rel="noopener">Teilmal öffnen <?= icon('external-link') ?></a>
       </div>
     </article>
 

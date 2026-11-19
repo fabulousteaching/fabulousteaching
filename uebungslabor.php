@@ -21,6 +21,12 @@ $uebungsfaecher = [
                 'link'         => 'spiele/bogenschiessen.html',
                 'quelle'       => 'Einmaleins-Spiel',
             ],
+            [
+                'titel'        => 'Meteoriten',
+                'beschreibung' => 'Einmaleins-Spiel: Im Cockpit der Rakete den Meteoriten mit dem richtigen Ergebnis abschiessen.',
+                'link'         => 'spiele/meteoriten.html',
+                'quelle'       => 'Einmaleins-Spiel',
+            ],
         ],
     ],
     'englisch' => [
